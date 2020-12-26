@@ -45,7 +45,7 @@ public class JsoupCrawlMangoPlate {
 		
 		for (Element element : elements) {
 			if (element.data().contains("<a href")) {
-				Pattern pattern = Pattern.compile(".*<a href=([^;]*);");
+				Pattern pattern = Pattern.compile(".*<a href =([^;]*);");
 				Matcher matcher = pattern.matcher(element.data());
 				if (matcher.find()) {
 					a = matcher.group(1);
