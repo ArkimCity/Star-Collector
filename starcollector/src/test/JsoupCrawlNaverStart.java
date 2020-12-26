@@ -15,7 +15,9 @@ import org.jsoup.select.Elements;
 
 public class JsoupCrawlNaverStart {
 	public static void main(String[] args) {
-		System.out.println(crawler("시골향기"));
+		for (Object string : crawler("시골향기")) {
+			System.out.println(string);
+		}
 	}
 
 	public static JSONObject jsonParser(String content) {

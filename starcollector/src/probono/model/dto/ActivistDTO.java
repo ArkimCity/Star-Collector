@@ -18,7 +18,7 @@ import lombok.Setter;
 
 @Entity(name="activist")
 public class ActivistDTO extends People{
-
+ 
 	@Id
 	@Column(name="activist_id")
 	private String activistId;
