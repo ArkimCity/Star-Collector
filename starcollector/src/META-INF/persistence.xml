@@ -6,6 +6,7 @@
 		<class>probono.model.dto.ProbonoDTO</class>
 		<class>probono.model.dto.ProbonoProjectDTO</class>
 		<class>probono.model.dto.RecipientDTO</class>
+		<class>probono.model.dto.UserEntity</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe" />
