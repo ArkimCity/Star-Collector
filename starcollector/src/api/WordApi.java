@@ -11,7 +11,7 @@ import org.jsoup.select.Elements;
 
 public class WordApi {
 	static String apikey = "A9CAF26B128DB44DA671FA8334A73CE9";
-	static String url = "https://stdict.korean.go.kr/api/view.do?key=" + apikey + "&method=TARGET_CODE&q=";
+	static String url = "https://stdict.korean.go.kr/api/view.do?key=" + apikey + "&advanced=y&method=TARGET_CODE&q=";
 	
 	public static ArrayList<String> crawler(String inputnumber) {
 		ArrayList<String> resultlist = new ArrayList<String>();
@@ -29,8 +29,7 @@ public class WordApi {
 			
 			for (Element e : scripts2) {
 				String finder = StringUtils.substringBetween(e.toString(), "CDATA[", "]");
-				
-				resultlist.add(finder);
+				resultlist.add(finder.replace("-", "").replace("^", "").replace(":", ""));
 				break;
 			}
 		}
