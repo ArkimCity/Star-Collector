@@ -5,7 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
 	String url = application.getContextPath() + "/";
-	ArrayList<String> words = WordApi.crawler(10);
+	ArrayList<String> words = WordApi.crawler(request.getParameter("inputnumber"));
 	request.setAttribute("words", words);
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -15,28 +15,25 @@
 <title>World of Words</title>
 </head>
 <body>
+	<div>
+		<form action="wordsList.jsp" method="post">
+	    	<input type="submit" class="w3-large w3-animate-top" value="FIND OUT"></input>
+	    	<input type="text" name="inputnumber" value="10"/><br>
+    	</form>
+	</div>
 	<br>
 	<br>
 	<br>
 	<center>
 		<h3>word list</h3>
 		<hr>
-		<p>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>단어</th>
-				</tr>
-			</thead>
 			<c:forEach items="${requestScope.words}" var="word">
-				<tr>
-					<td>${word}</td>
-				</tr>
+				<h1 class="w3-middle w3-animate-top">${word}</h1>
 			</c:forEach>
-		</table>
 		<br>
 		<br>
-		<br> <font color="blue">재능 기부자 id를 클릭하면 상세 정보 확인이 가능합니다</font> <a href="index.html">메인 화면 이동</a>
+		<br>
+		<a href="index.html">메인 화면 이동</a>
 	</center>
 </body>
 </html>

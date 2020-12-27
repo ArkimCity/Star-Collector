@@ -22,12 +22,13 @@ body, html {height: 100%}
     WordlOfWords
   </div>
   <div class="w3-display-middle">
-    <a h1 class="w3-jumbo w3-animate-top" href="wordsList.jsp">FIND OUT</a>
-    <h1 class="w3-middle w3-animate-top">YOUR WORDS</h1>
+    <form action="wordsList.jsp" method="post">
+    <input type="submit" class="w3-large w3-animate-top" value="FIND OUT"></input>
+    <h1 class="w3-middle w3-animate-top">YOUR</h1>
+    <input type="text" name="inputnumber" value="10"/><br>
+    <h1 class="w3-middle w3-animate-top">WORDS</h1>
     <h1 class="w3-middle w3-animate-top">OF THE DAY!</h1>
     <hr class="w3-border-grey" style="margin:auto;width:40%">
-    <form action="wordapi">
-    
     </form>
   </div>
 </div>

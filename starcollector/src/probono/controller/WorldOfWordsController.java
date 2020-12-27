@@ -16,7 +16,7 @@ import probono.model.util.PublicCommon;
 
 @Slf4j
 
-@WebServlet("/probono")
+@WebServlet("/worldofwords")
 public class WorldOfWordsController extends HttpServlet {
     
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
