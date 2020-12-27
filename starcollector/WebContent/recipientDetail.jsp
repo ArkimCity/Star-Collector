@@ -34,16 +34,10 @@
 		</table>
 		<br>
 		<br>
-		<br> <a href="probono?command=recipientUpdateReq&recipientId=${recipient.recipientId}">수정하기</a>
+		<br>
+		<a href="probono?command=recipientUpdateReq&recipientId=${recipient.recipientId}">수정하기</a>
 		<a href="probono?command=recipientDelete&recipientId=${recipient.recipientId}">탈퇴하기</a>
 		&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/index.html">메인 화면 이동</a>
 	</center>
 </body>
 </html>
-
-
-
-
-
-
-

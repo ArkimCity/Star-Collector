@@ -10,18 +10,15 @@
 </head>
 <body>
 	<main id="main-holder">
-	<%
-	if (request.getAttribute("errorMsg")!=null){
-		out.print(request.getAttribute("errorMsg"));
-	}
-	%>
-	
 	<h1 id="login-header">Login</h1>
+	${requestScope.errorMsg}
 	<form id="login-form" action="loginservice" method="post">
 		<input id="username-field" type="text" name="id" placeholder="Username"><br>
 		<input id="password-field" type="password" name="pw" placeholder="Password"><br>
 		<input id="login-form-submit" type="submit" value="login">
 	</form>
+	
+	<a href="index.html">메인 화면 이동</a>
 	</main>
 </body>
 </html>

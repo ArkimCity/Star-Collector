@@ -26,24 +26,12 @@ public class WorldOfWordsController extends HttpServlet {
 		//선생님 코멘트 - 컨트롤러의 현재 엔티티매니저는 컨트롤러에서 사용하지 않는 것이 좋다. 추후 프로젝트 진행시에는  컨트롤러가 아니라 서비스에서 사용해야함
 		String command = request.getParameter("command");
 		try{
-			if(command.equals("probonoProjectAll")){//모든 probono project 정보 검색
-				probonoProjectAll(em, request, response);
-			}else if(command.equals("activistAll")){//모든 재능 기부자 검색
-				activistAll(em, request, response);
+			if(command.equals("login")){//모든 probono project 정보 검색
+				login(em, request, response);
+			}else if(command.equals("logout")){//모든 재능 기부자 검색
+				logout(em, request, response);
 			}else if(command.equals("activist")){//특정 재능 기부자 정보 검색
-				activist(em, request, response);
-			}else if(command.equals("activistInsert")){//재능 기부자 추가 등록
-				activistInsert(em, request, response);
-			}else if(command.equals("activistUpdateReq")){//재능 기부자 정보 수정요청
-				activistUpdateReq(em, request, response);
-			}else if(command.equals("activistUpdate")){//재능 기부자 정보 수정
-				activistUpdate(em, request, response);
-			}else if(command.equals("activistDelete")){//재능 기부자 탈퇴[삭제]
-				activistDelete(em, request, response);
-			}else if(command.equals("recipient")){//특정 재능 기부자 정보 검색
 				recipient(em, request, response);
-			}else if(command.equals("recipientUpdateReq")){//재능 기부자 정보 수정요청
-				recipientUpdateReq(em, request, response);
 			}else if(command.equals("recipientUpdate")){//재능 기부자 정보 수정
 				recipientUpdate(em, request, response);
 			}else if(command.equals("recipientDelete")){//재능 기부자 탈퇴[삭제]
@@ -62,17 +50,25 @@ public class WorldOfWordsController extends HttpServlet {
 		}
 	}
 
-	//모두 ProbonoProject 검색 메소드
-	public void probonoProjectAll(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void logout(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = "showError.jsp";
 		try {
 			request.setAttribute("probonoProjectAll", ProbonoService.getAllProbonoProjects(em));
-			url = "probonoProjectList.jsp";
+			url = "wordList.jsp";
 		}catch(Exception s){
 			request.setAttribute("errorMsg", s.getMessage());
 			s.printStackTrace();
 		}
 		request.getRequestDispatcher(url).forward(request, response);
+	}
+
+	private void login(EntityManager em, HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	//모두 ProbonoProject 검색 메소드
+	public void probonoProjectAll(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	}
 	
 	public void activistAll(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
