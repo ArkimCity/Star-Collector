@@ -54,6 +54,8 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					<%
 						}
 					%>
+					<br>
+					<a href="brainStorm.jsp">Let's BrainStorm With these!</a>
 					<hr>
 					<form action="worldofwords?command=getWordList&userwordscommand=getUserWords" method="post">
 						<input type="submit" class="w3-large w3-animate-top"
