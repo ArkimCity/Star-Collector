@@ -1,6 +1,3 @@
-<%@page import="probono.controller.WorldOfWordsController"%>
-<%@page import="probono.model.WordApi"%>
-<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -20,8 +17,11 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	font-family: "Roboto", sans-serif
 }
 </style>
+
+<jsp:include page="NavigationBar.jsp"></jsp:include>
+
 <!-- Page Container -->
-<div class="w3-content w3-margin-top" style="max-width: 1400px;">
+<div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
 
 	<!-- The Grid -->
 	<div class="w3-row-padding">
@@ -129,7 +129,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 		</div>
 
 		<!-- Right Column -->
-		<div class="w3-twothird">
+		<div class="w3-twothird" >
 			<c:forEach items="${sessionScope.words}" var="word">
 				<div class="w3-container w3-card w3-white w3-margin-bottom">
 					<h2 class="w3-text-grey w3-padding-16">
