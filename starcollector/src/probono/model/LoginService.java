@@ -16,16 +16,15 @@ import probono.model.util.PublicCommon;
 
 @Slf4j
 
-@WebServlet("/loginservice")
-public class LoginService extends HttpServlet {
+public class LoginService {
 	
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public static Boolean login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		EntityManager em = PublicCommon.getEntityManger();
 		String id = request.getParameter("id");
 		String inputPassword = request.getParameter("pw");
 		String password = null;
-		HttpSession session = request.getSession();
-		String url = "login-page.jsp";
+		Boolean result = false;
 		if (em.find(UserEntity.class, id)!=null) {
 			
 			try {
@@ -39,7 +38,7 @@ public class LoginService extends HttpServlet {
 			if (password.equals(inputPassword)) {
 				session.setAttribute("id", id);
 				log.warn(id + " 로그인 성공 기록");
-				url = "wordList.jsp";
+				result = true;
 			} else {
 				log.warn(id + " 로 틀린 비밀번호시도 기록");
 				request.setAttribute("errorMsg", "로그인에 실패하였습니다. 아이디 혹은 비밀번호를 다시 확인해 주십시오");
@@ -48,7 +47,7 @@ public class LoginService extends HttpServlet {
 			log.warn(id + " 로 없는 아이디 로그인 시도 기록");
 			request.setAttribute("errorMsg", "로그인에 실패하였습니다. 아이디 혹은 비밀번호를 다시 확인해 주십시오");
 		}
-		request.getRequestDispatcher(url).forward(request, response);
+		return result;
 	}
 
 }

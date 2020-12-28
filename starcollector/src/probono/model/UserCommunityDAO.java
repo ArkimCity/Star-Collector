@@ -18,26 +18,26 @@ import java.util.ArrayList;
 import javax.persistence.EntityManager;
 
 import probono.model.dto.ActivistDTO;
+import probono.model.dto.CommunityEntity;
 import probono.model.dto.ProbonoDTO;
 import probono.model.dto.ProbonoProjectDTO;
 import probono.model.dto.RecipientDTO;
 import probono.model.util.DBUtil;
 import probono.model.util.PublicCommon;
 
-public class ProbonoProjectDAO {
+public class UserCommunityDAO {
 	
 	//프로보노 프로젝트 저장
-	public static boolean addProbonoProject(ProbonoProjectDTO probonoProject) throws SQLException{
+	public static boolean addUserCommunity(CommunityEntity userCommunity) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("insert into probono_project values(probono_project_id_seq.nextval, ? ?, ?, ?, ?)");
-			pstmt.setString(1, probonoProject.getProbonoProjectName());
-			pstmt.setString(2, probonoProject.getProbonoId().getProbonoId());
-			pstmt.setString(3, probonoProject.getActivistId().getActivistId());
-			pstmt.setString(4, probonoProject.getRecipientId().getRecipientId());
-			pstmt.setString(5, probonoProject.getProjectContent());
+			pstmt = con.prepareStatement("insert into userCommunity values(userCommunity_id_seq.nextval, ? ?, ?, ?, ?)");
+			pstmt.setString(1, userCommunity.getUserId().getUserId());
+			pstmt.setString(2, userCommunity.getWord());
+			pstmt.setInt(3, userCommunity.getThumbsUp());
+
 			
 			int result = pstmt.executeUpdate();
 		
@@ -52,7 +52,7 @@ public class ProbonoProjectDAO {
 	
 	//수정
 	// 프로보노 프로젝트 ID로  재능기부자 수정
-	public static boolean updateProbonoProjectActivist(int projectId, String activistId) throws SQLException{		
+	public static boolean updateUserCommunity(int projectId, String activistId) throws SQLException{		
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
@@ -71,30 +71,8 @@ public class ProbonoProjectDAO {
 		}
 		return false;
 	}
-	
-	//수정
-	//프로보노 프로젝트 id로 수해자 정보 변경
-	public static boolean updateProbonoProjectReceive(int probonoProjectId, String  receiveId) throws SQLException{
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try{
-			con = DBUtil.getConnection();
-			
-			pstmt = con.prepareStatement("update probono_project set receive_id=? where probono_project_id=?");
-			pstmt.setString(1, receiveId);
-			pstmt.setInt(2, probonoProjectId);
-			
-			int result = pstmt.executeUpdate();
-			if(result == 1){
-				return true;
-			}
-		}finally{
-			DBUtil.close(con, pstmt);
-		}
-		return false;
-	}
-	
-	public static boolean deleteProbonoProject(int probonoProjectId) throws SQLException{
+
+	public static boolean deleteUserCommunity(int probonoProjectId) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
@@ -112,12 +90,12 @@ public class ProbonoProjectDAO {
 	}
 	
 	//프로보노 프로젝트 id로 해당 프로보노프로젝트 검색
-	public static ProbonoProjectDTO getProbonoProject(int probonoProjectId) throws SQLException{
+	public static CommunityEntity getUserCommunity(int probonoProjectId) throws SQLException{
 		EntityManager em = PublicCommon.getEntityManger();
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		ProbonoProjectDTO probonoUser = null;
+		CommunityEntity probonoUser = null;
 		
 		try{
 			con = DBUtil.getConnection();
@@ -125,8 +103,8 @@ public class ProbonoProjectDAO {
 			pstmt.setInt(1, probonoProjectId);
 			rset = pstmt.executeQuery();
 			if(rset.next()){
-				probonoUser = ProbonoProjectDTO.builder().probonoProjectId(rset.getInt(1)).probonoProjectName(rset.getString(2)).probonoId(em.find(ProbonoDTO.class, rset.getString(3)))
-						.activistId(em.find(ActivistDTO.class, rset.getString(4))).recipientId(em.find(RecipientDTO.class, rset.getString(5))).projectContent(rset.getString(6)).build();
+				probonoUser = CommunityEntity.builder().probonoProjectId(rset.getInt(1)).probonoProjectName(rset.getString(2)).probonoId(em.find(ProbonoDTO.class, rset.getString(3)))
+						.activistId(em.find(CommunityEntity.class, rset.getString(4))).recipientId(em.find(RecipientDTO.class, rset.getString(5))).projectContent(rset.getString(6)).build();
 						}
 		}finally{
 			DBUtil.close(con, pstmt, rset);

@@ -1,6 +1,9 @@
 package probono.controller;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -10,193 +13,215 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
-import probono.model.ProbonoService;
-import probono.model.dto.ActivistDTO;
+import probono.model.LoginService;
+import probono.model.WordApi;
+import probono.model.WorldOfWordsCRUDService;
+import probono.model.dto.UserEntity;
 import probono.model.util.PublicCommon;
 
 @Slf4j
 
 @WebServlet("/worldofwords")
 public class WorldOfWordsController extends HttpServlet {
-    
+
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		EntityManager em = PublicCommon.getEntityManger();
-		
 		request.setCharacterEncoding("utf-8");
 		//선생님 코멘트 - 컨트롤러의 현재 엔티티매니저는 컨트롤러에서 사용하지 않는 것이 좋다. 추후 프로젝트 진행시에는  컨트롤러가 아니라 서비스에서 사용해야함
 		String command = request.getParameter("command");
 		try{
-			if(command.equals("login")){//모든 probono project 정보 검색
-				login(em, request, response);
-			}else if(command.equals("logout")){//모든 재능 기부자 검색
-				logout(em, request, response);
-			}else if(command.equals("activist")){//특정 재능 기부자 정보 검색
-				recipient(em, request, response);
-			}else if(command.equals("recipientUpdate")){//재능 기부자 정보 수정
-				recipientUpdate(em, request, response);
-			}else if(command.equals("recipientDelete")){//재능 기부자 탈퇴[삭제]
-				recipientDelete(em, request, response);
+			if(request.getParameter("userwordscommand")!=null){//유저가 저장한 단어 보여주는 역할
+				getUserWords(request, response); 
 			}else {
 				request.setAttribute("errorMsg", "잘못된 명령입니다. 다시 시도해 주십시오");
 				request.getRequestDispatcher("showError.jsp").forward(request, response);
 			}
+			
+			if(command.equals("login")){//모든 probono project 정보 검색
+				login(request, response);
+			}else if(command.equals("logout")){//모든 재능 기부자 검색
+				logout(request, response);
+			}else if(command.equals("userInsert")){//특정 재능 기부자 정보 검색
+				userInsert(request, response);
+			}else if(command.equals("userWordInsert")){//재능 기부자 정보 수정
+				userWordInsert(request, response);
+			}else if(command.equals("userCommunityInsert")){//재능 기부자 탈퇴[삭제]
+				communityInsert(request, response);
+			}else if(command.equals("userCommunityAll")){//재능 기부자 탈퇴[삭제]
+				communityAll(request, response);
+			}else if(command.equals("getWordList")){//단어리스트에 단어 보내주는 역할
+				getWordList(request, response); 
+			}else {
+				request.setAttribute("errorMsg", "잘못된 명령입니다. 다시 시도해 주십시오");
+				request.getRequestDispatcher("showError.jsp").forward(request, response);
+			}
+			
 		}catch(Exception s){
 			request.setAttribute("errorMsg", s.getMessage());
 			request.getRequestDispatcher("showError.jsp").forward(request, response);
 			s.printStackTrace();
-		}finally {
-			em.close();
-			log.warn("em 종료 기록");
 		}
 	}
 
-	private void logout(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "showError.jsp";
-		try {
-			request.setAttribute("probonoProjectAll", ProbonoService.getAllProbonoProjects(em));
-			url = "wordList.jsp";
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
-			s.printStackTrace();
+	private void getUserWords(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ArrayList<String> userwords = new ArrayList<String>();
+		if (request.getSession().getAttribute("id") == null) {
+			request.setAttribute("noWordsMsg", "아직 저장하신 단어가 없네요!");
+		} else {
+			try {
+				userwords = WorldOfWordsCRUDService.getUserWords((String)request.getSession().getAttribute("id"));
+			} catch (SQLException e) {
+				request.setAttribute("errorMsg", e.getMessage());
+				e.printStackTrace();
+			}
 		}
-		request.getRequestDispatcher(url).forward(request, response);
+		request.setAttribute("userwords", userwords);
 	}
 
-	private void login(EntityManager em, HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-		
-	}
+	private void userInsert(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String url = "showError.jsp";
+		String id = request.getParameter("userId");
+		String pw = request.getParameter("password");
+		String name = request.getParameter("userName");
+		String nickname = request.getParameter("nickname");
 
-	//모두 ProbonoProject 검색 메소드
-	public void probonoProjectAll(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	}
-	
-	public void activistAll(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "showError.jsp";
-		try {
-			request.setAttribute("activistAll", ProbonoService.getAllActivists(em));
-			url = "activistList.jsp";
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
-			s.printStackTrace();
-		}
-		request.getRequestDispatcher(url).forward(request, response);
-	}
-	
-	public void activist(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "showError.jsp";
-		try {
-			request.setAttribute("activist", ProbonoService.getActivist(em, request.getParameter("activistId")));
-			url = "activistDetail.jsp";
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
-			s.printStackTrace();
-		}
-		request.getRequestDispatcher(url).forward(request, response);
-	}
-	
-	public void recipient(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "showError.jsp";
-		try {
-			request.setAttribute("recipient", ProbonoService.getRecipient(em, request.getParameter("recipientId")));
-			url = "recipientDetail.jsp";
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
-			s.printStackTrace();
-		}
-		request.getRequestDispatcher(url).forward(request, response);
-	}
-	
-	protected void activistInsert(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "showError.jsp";
-		String id = request.getParameter("activistId");
-		String name = request.getParameter("name");
-		String pw = request.getParameter("pw");
-		String major = request.getParameter("major");
-		
-		if(id == null || id.length() == 0 || name == null) {
+		if (id == null || id.length() == 0 || name == null) {
 			request.setAttribute("errorMsg", "정보가 부족합니다");
 		} else {
-			ActivistDTO activist = ActivistDTO.builder().activistId(id).name(name).password(pw).major(major).build();
-			try{
-				ProbonoService.addActivist(em, activist);
-				request.setAttribute("activist", activist);
+			UserEntity user = UserEntity.builder().userId(id).password(pw).userName(name).nickname(nickname).build();
+			try {
+				WorldOfWordsCRUDService.addUser(user);
+				request.getSession().setAttribute("id", id);
 				request.setAttribute("successMsg", "가입 완료");
 				url = "activistDetail.jsp";
-			}catch(Exception s){
+			} catch (Exception s) {
 				request.setAttribute("errorMsg", s.getMessage());
 			}
 		}
 		request.getRequestDispatcher(url).forward(request, response);
+
 	}
-	
-	public void activistUpdateReq(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void userWordInsert(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void communityInsert(HttpServletRequest request, HttpServletResponse response) {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void communityAll(HttpServletRequest request, HttpServletResponse response) {
+
+	}
+
+	private void logout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = "showError.jsp";
 		try {
-			request.setAttribute("activist", ProbonoService.getActivist(em, request.getParameter("activistId")));
-			url = "activistUpdate.jsp";
-		}catch(Exception s){
+			request.getSession().setAttribute("id", null);
+			url = "wordList.jsp";
+		} catch (Exception s) {
 			request.setAttribute("errorMsg", s.getMessage());
 			s.printStackTrace();
 		}
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 
-	public void activistUpdate(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			ProbonoService.updateActivist(em, request.getParameter("activistId"), request.getParameter("major"));
-			request.setAttribute("successMsg", "수정 완료");
-			activist(em, request, response);
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
-			request.getRequestDispatcher("showError.jsp").forward(request, response);
-		}
-	}
-	
-	public void activistDelete(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "showError.jsp";
-		try{
-			String id = request.getParameter("activistId");
-			ProbonoService.deleteActivist(em, id);
-			url= "probono?command=activistAll";
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage()); 
-		}
-		request.getRequestDispatcher(url).forward(request, response);
-	}
-	
-	public void recipientUpdateReq(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String url = "showError.jsp";
+	private void login(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String url = "login-page.jsp";
 		try {
-			request.setAttribute("recipient", ProbonoService.getRecipient(em, request.getParameter("recipientId")));
-			url = "recipientUpdate.jsp";
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
-			s.printStackTrace();
+			if (LoginService.login(request, response)) {
+				url = "wordList.jsp";
+			}
+		} catch (Exception e) {
+			request.setAttribute("errorMsg", e.getMessage());
+			url = "showError.jsp";
+			e.printStackTrace();
 		}
 		request.getRequestDispatcher(url).forward(request, response);
+
 	}
-	
-	public void recipientUpdate(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try{
-			ProbonoService.updateRecipient(em, request.getParameter("recipientId"), request.getParameter("receiveContent"));
-			request.setAttribute("successMsg", "수정 완료");
-			recipient(em, request, response);
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
-			request.getRequestDispatcher("showError.jsp").forward(request, response);
-		}
-	}
-	
-	public void recipientDelete(EntityManager em, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	// 모두 ProbonoProject 검색 메소드
+	public void getWordList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		ArrayList<HashMap<String, String>> words = new ArrayList<HashMap<String, String>>();
+		String inputnumber = request.getParameter("inputnumber");
 		String url = "showError.jsp";
-		try{
-			String id = request.getParameter("recipientId");
-			ProbonoService.deleteRecipient(em, id);
-			request.setAttribute("successMsg", "삭제 완료");
-		}catch(Exception s){
-			request.setAttribute("errorMsg", s.getMessage());
+		if (inputnumber == null) {
+			words = WordApi.crawler("10");
+			url = "wordList.jsp";
+		} else {
+			words = WordApi.crawler(inputnumber);
+			url = "wordList.jsp";
 		}
+		request.setAttribute("words", words);
 		request.getRequestDispatcher(url).forward(request, response);
 	}
+	/*
+	 * public void activist(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException { String url =
+	 * "showError.jsp"; try { request.setAttribute("activist",
+	 * WorldOfWordsCRUDService.get(em, request.getParameter("activistId"))); url =
+	 * "activistDetail.jsp"; }catch(Exception s){ request.setAttribute("errorMsg",
+	 * s.getMessage()); s.printStackTrace(); }
+	 * request.getRequestDispatcher(url).forward(request, response); }
+	 * 
+	 * public void recipient(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException { String url =
+	 * "showError.jsp"; try { request.setAttribute("recipient",
+	 * ProbonoService.getRecipient(em, request.getParameter("recipientId"))); url =
+	 * "recipientDetail.jsp"; }catch(Exception s){ request.setAttribute("errorMsg",
+	 * s.getMessage()); s.printStackTrace(); }
+	 * request.getRequestDispatcher(url).forward(request, response); }
+	 * 
+	 * public void activistUpdateReq(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException { String url =
+	 * "showError.jsp"; try { request.setAttribute("activist",
+	 * ProbonoService.getActivist(em, request.getParameter("activistId"))); url =
+	 * "activistUpdate.jsp"; }catch(Exception s){ request.setAttribute("errorMsg",
+	 * s.getMessage()); s.printStackTrace(); }
+	 * request.getRequestDispatcher(url).forward(request, response); }
+	 * 
+	 * public void activistUpdate(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException { try{
+	 * ProbonoService.updateActivist(em, request.getParameter("activistId"),
+	 * request.getParameter("major")); request.setAttribute("successMsg", "수정 완료");
+	 * activist(em, request, response); }catch(Exception s){
+	 * request.setAttribute("errorMsg", s.getMessage());
+	 * request.getRequestDispatcher("showError.jsp").forward(request, response); } }
+	 * 
+	 * public void activistDelete(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException { String url =
+	 * "showError.jsp"; try{ String id = request.getParameter("activistId");
+	 * ProbonoService.deleteActivist(em, id); url= "probono?command=activistAll";
+	 * }catch(Exception s){ request.setAttribute("errorMsg", s.getMessage()); }
+	 * request.getRequestDispatcher(url).forward(request, response); }
+	 * 
+	 * public void recipientUpdateReq(HttpServletRequest request,
+	 * HttpServletResponse response) throws ServletException, IOException { String
+	 * url = "showError.jsp"; try { request.setAttribute("recipient",
+	 * ProbonoService.getRecipient(em, request.getParameter("recipientId"))); url =
+	 * "recipientUpdate.jsp"; }catch(Exception s){ request.setAttribute("errorMsg",
+	 * s.getMessage()); s.printStackTrace(); }
+	 * request.getRequestDispatcher(url).forward(request, response); }
+	 * 
+	 * public void recipientUpdate(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException { try{
+	 * ProbonoService.updateRecipient(em, request.getParameter("recipientId"),
+	 * request.getParameter("receiveContent")); request.setAttribute("successMsg",
+	 * "수정 완료"); recipient(em, request, response); }catch(Exception s){
+	 * request.setAttribute("errorMsg", s.getMessage());
+	 * request.getRequestDispatcher("showError.jsp").forward(request, response); } }
+	 * 
+	 * public void recipientDelete(HttpServletRequest request, HttpServletResponse
+	 * response) throws ServletException, IOException { String url =
+	 * "showError.jsp"; try{ String id = request.getParameter("recipientId");
+	 * ProbonoService.deleteRecipient(em, id); request.setAttribute("successMsg",
+	 * "삭제 완료"); }catch(Exception s){ request.setAttribute("errorMsg",
+	 * s.getMessage()); } request.getRequestDispatcher(url).forward(request,
+	 * response); }
+	 */
 }

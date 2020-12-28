@@ -12,21 +12,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import probono.model.dto.ProbonoDTO;
+import probono.model.dto.UserWordDTO;
+import probono.model.dto.UserWordEntity;
 import probono.model.util.DBUtil;
 
-public class ProbonoDAO {	
+public class UserWordDAO {	
 	
 	//저장
-	public static boolean addProbono(ProbonoDTO probono) throws SQLException{
+	public static boolean addUserWord(UserWordDTO probono) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement("insert into probono values(?, ?, ?)");
-			pstmt.setString(1, probono.getProbonoId());
-			pstmt.setString(2, probono.getProbonoName());
-			pstmt.setString(3, probono.getProbonoPurpose());
+			pstmt.setString(1, probono.getUserWordId());
+			pstmt.setString(2, probono.getUserWordName());
+			pstmt.setString(3, probono.getUserWordPurpose());
 			
 			int result = pstmt.executeUpdate();
 		
@@ -41,7 +42,7 @@ public class ProbonoDAO {
 
 	//수정
 	//프로보노 id로 프로보노 목적 수정하기
-	public static boolean updateProbono(String probonoId, String probonoPurpose) throws SQLException{
+	public static boolean updateUserWord(String probonoId, String probonoPurpose) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
@@ -62,7 +63,7 @@ public class ProbonoDAO {
 
 
 	//삭제 
-	public static boolean deleteProbono(String probonoId) throws SQLException{
+	public static boolean deleteUserWord(String probonoId) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
@@ -80,18 +81,18 @@ public class ProbonoDAO {
 	}
 	
 	//프로포노 아이디로 해당 프로보노 모든 정보 검색
-	public static ProbonoDTO getProbono(String probonoId) throws SQLException{
+	public static UserWordDTO getUserWord(String id) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		ProbonoDTO probono = null;
+		UserWordDTO probono = null;
 		try{
 			con = DBUtil.getConnection();
 			pstmt = con.prepareStatement("select * from probono where probono_id=?");
-			pstmt.setString(1, probonoId);
+			pstmt.setString(1, id);
 			rset = pstmt.executeQuery();
 			if(rset.next()){
-				probono = ProbonoDTO.builder().probonoId(rset.getString(1)).probonoName(rset.getString(2)).probonoPurpose(rset.getString(3)).build();
+				probono = UserWordDTO.builder().probonoId(rset.getString(1)).probonoName(rset.getString(2)).probonoPurpose(rset.getString(3)).build();
 			}
 		}finally{
 			DBUtil.close(con, pstmt, rset);
@@ -99,20 +100,21 @@ public class ProbonoDAO {
 		return probono;
 	}
 
-	//모든 프로보노 검색
-	public static ArrayList<ProbonoDTO> getAllProbonos() throws SQLException{
+	//해당 유저가 저장한 단어 검색
+	public static ArrayList<String> getUserWords(String userId) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		ArrayList<ProbonoDTO> list = null;
+		ArrayList<String> list = null;
 		try{
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("select * from probono");
+			pstmt = con.prepareStatement("select * from userword where userid=?");
+			pstmt.setString(1, userId);
 			rset = pstmt.executeQuery();
 			
-			list = new ArrayList<ProbonoDTO>();
+			list = new ArrayList<String>();
 			while(rset.next()){
-				list.add(ProbonoDTO.builder().probonoId(rset.getString(1)).probonoName(rset.getString(2)).probonoPurpose(rset.getString(3)).build());
+				list.add(rset.getString(2));
 			}
 		}finally{
 			DBUtil.close(con, pstmt, rset);
