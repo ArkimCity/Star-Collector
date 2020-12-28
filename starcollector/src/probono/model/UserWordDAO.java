@@ -12,22 +12,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import probono.model.dto.UserWordDTO;
-import probono.model.dto.UserWordEntity;
 import probono.model.util.DBUtil;
 
 public class UserWordDAO {	
 	
 	//저장
-	public static boolean addUserWord(UserWordDTO probono) throws SQLException{
+	public static boolean saveUserWord(String id, String word) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("insert into probono values(?, ?, ?)");
-			pstmt.setString(1, probono.getUserWordId());
-			pstmt.setString(2, probono.getUserWordName());
-			pstmt.setString(3, probono.getUserWordPurpose());
+			pstmt = con.prepareStatement("insert into userword values(?,?)");
+			pstmt.setString(1, id);
+			pstmt.setString(2, word);
 			
 			int result = pstmt.executeUpdate();
 		
@@ -39,6 +36,7 @@ public class UserWordDAO {
 		}
 		return false;
 	}
+
 
 	//수정
 	//프로보노 id로 프로보노 목적 수정하기
@@ -63,13 +61,14 @@ public class UserWordDAO {
 
 
 	//삭제 
-	public static boolean deleteUserWord(String probonoId) throws SQLException{
+	public static boolean deleteUserWord(String id, String word) throws SQLException{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		try{
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("delete from probono where probono_id=?");
-			pstmt.setString(1, probonoId);
+			pstmt = con.prepareStatement("delete from userword where userId=? and word=?");
+			pstmt.setString(1, id);
+			pstmt.setString(2, word);
 			int result = pstmt.executeUpdate();
 			if(result == 1){
 				return true;
@@ -78,26 +77,6 @@ public class UserWordDAO {
 			DBUtil.close(con, pstmt);
 		}
 		return false;
-	}
-	
-	//프로포노 아이디로 해당 프로보노 모든 정보 검색
-	public static UserWordDTO getUserWord(String id) throws SQLException{
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		UserWordDTO probono = null;
-		try{
-			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("select * from probono where probono_id=?");
-			pstmt.setString(1, id);
-			rset = pstmt.executeQuery();
-			if(rset.next()){
-				probono = UserWordDTO.builder().probonoId(rset.getString(1)).probonoName(rset.getString(2)).probonoPurpose(rset.getString(3)).build();
-			}
-		}finally{
-			DBUtil.close(con, pstmt, rset);
-		}
-		return probono;
 	}
 
 	//해당 유저가 저장한 단어 검색

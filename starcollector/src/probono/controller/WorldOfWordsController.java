@@ -17,6 +17,7 @@ import probono.model.LoginService;
 import probono.model.WordApi;
 import probono.model.WorldOfWordsCRUDService;
 import probono.model.dto.UserEntity;
+import probono.model.dto.UserWordEntity;
 import probono.model.util.PublicCommon;
 
 @Slf4j
@@ -29,25 +30,20 @@ public class WorldOfWordsController extends HttpServlet {
 		//선생님 코멘트 - 컨트롤러의 현재 엔티티매니저는 컨트롤러에서 사용하지 않는 것이 좋다. 추후 프로젝트 진행시에는  컨트롤러가 아니라 서비스에서 사용해야함
 		String command = request.getParameter("command");
 		try{
-			if(request.getParameter("userwordscommand")!=null){//유저가 저장한 단어 보여주는 역할
-				getUserWords(request, response); 
-			}else {
-				request.setAttribute("errorMsg", "잘못된 명령입니다. 다시 시도해 주십시오");
-				request.getRequestDispatcher("showError.jsp").forward(request, response);
-			}
-			
-			if(command.equals("login")){//모든 probono project 정보 검색
+			if(command.equals("login")){
 				login(request, response);
-			}else if(command.equals("logout")){//모든 재능 기부자 검색
+			}else if(command.equals("logout")){
 				logout(request, response);
-			}else if(command.equals("userInsert")){//특정 재능 기부자 정보 검색
+			}else if(command.equals("userInsert")){
 				userInsert(request, response);
-			}else if(command.equals("userWordInsert")){//재능 기부자 정보 수정
-				userWordInsert(request, response);
-			}else if(command.equals("userCommunityInsert")){//재능 기부자 탈퇴[삭제]
+			}else if(command.equals("userCommunityInsert")){
 				communityInsert(request, response);
-			}else if(command.equals("userCommunityAll")){//재능 기부자 탈퇴[삭제]
+			}else if(command.equals("userCommunityAll")){
 				communityAll(request, response);
+			}else if(command.equals("saveUserWord")){//단어리스트에 단어 보내주는 역할
+				saveUserWord(request, response); 
+			}else if(command.equals("deleteUserWord")){//단어리스트에 단어 보내주는 역할
+				deleteUserWord(request, response); 
 			}else if(command.equals("getWordList")){//단어리스트에 단어 보내주는 역할
 				getWordList(request, response); 
 			}else {
@@ -62,6 +58,39 @@ public class WorldOfWordsController extends HttpServlet {
 		}
 	}
 
+	private void saveUserWord(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String url = "showError.jsp";
+		String id = (String) request.getSession().getAttribute("id");
+		String word = request.getParameter("word");
+
+		if (id == null || id.length() == 0 || word == null) {
+			request.setAttribute("errorMsg", "정보가 부족합니다");
+		} else {
+			try {
+				WorldOfWordsCRUDService.saveUserWord(id, word);
+				getUserWords(request, response);
+				url = "wordList.jsp";
+			} catch (Exception s) {
+				request.setAttribute("errorMsg", s.getMessage());
+			}
+		}
+		request.getRequestDispatcher(url).forward(request, response); 
+	}
+
+	private void deleteUserWord(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+		String url = "showError.jsp";
+		String id = (String) request.getSession().getAttribute("id");
+		String word = request.getParameter("word");
+		try {
+			WorldOfWordsCRUDService.deleteUserWord(id, word);
+			getUserWords(request, response);
+			url = "wordList.jsp";
+		} catch (Exception e) {
+			request.setAttribute("errorMsg", e.getMessage());
+		}
+		request.getRequestDispatcher(url).forward(request, response);
+	}
+
 	private void getUserWords(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ArrayList<String> userwords = new ArrayList<String>();
@@ -69,7 +98,8 @@ public class WorldOfWordsController extends HttpServlet {
 			request.setAttribute("noWordsMsg", "아직 저장하신 단어가 없네요!");
 		} else {
 			try {
-				userwords = WorldOfWordsCRUDService.getUserWords((String)request.getSession().getAttribute("id"));
+				String id = (String)request.getSession().getAttribute("id");
+				userwords = WorldOfWordsCRUDService.getUserWords(id);
 			} catch (SQLException e) {
 				request.setAttribute("errorMsg", e.getMessage());
 				e.printStackTrace();
@@ -103,11 +133,6 @@ public class WorldOfWordsController extends HttpServlet {
 
 	}
 
-	private void userWordInsert(HttpServletRequest request, HttpServletResponse response) {
-		// TODO Auto-generated method stub
-
-	}
-
 	private void communityInsert(HttpServletRequest request, HttpServletResponse response) {
 		// TODO Auto-generated method stub
 
@@ -133,6 +158,7 @@ public class WorldOfWordsController extends HttpServlet {
 		String url = "login-page.jsp";
 		try {
 			if (LoginService.login(request, response)) {
+				getUserWords(request, response);
 				url = "wordList.jsp";
 			}
 		} catch (Exception e) {
@@ -144,7 +170,6 @@ public class WorldOfWordsController extends HttpServlet {
 
 	}
 
-	// 모두 ProbonoProject 검색 메소드
 	public void getWordList(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ArrayList<HashMap<String, String>> words = new ArrayList<HashMap<String, String>>();
@@ -157,6 +182,7 @@ public class WorldOfWordsController extends HttpServlet {
 			words = WordApi.crawler(inputnumber);
 			url = "wordList.jsp";
 		}
+		getUserWords(request, response);
 		request.setAttribute("words", words);
 		request.getRequestDispatcher(url).forward(request, response);
 	}

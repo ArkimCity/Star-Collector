@@ -20,45 +20,7 @@ import probono.model.util.PublicCommon;
 @Slf4j
 
 public class WorldOfWordsCRUDService {
-
-	//Probono - CRUD
-	public static void notExistProbono(String probonoId) throws NotExistException, SQLException{
-		UserWordEntity probono = UserWordDAO.getProbono(probonoId);
-		if(probono == null){
-			throw new NotExistException("검색하진 재능기부 정보가 없습니다.");
-		}
-	}
-	
-	//모든 probono 정보 반환
-	public static ArrayList<UserWordEntity> getAllProbonos() throws SQLException{
-		return UserWordDAO.getAllProbonos();
-	}
-	//probono id로 검색
-	public static UserWordEntity getProbono(String probonoId) throws SQLException, NotExistException{
-		UserWordEntity probono = UserWordDAO.getProbono(probonoId);
-		if(probono == null){
-			throw new NotExistException("검색하신 재능기부 정보가 없습니다.");
-		}
-		return probono;
-	}
-	//새로운 probono 저장
-	public static boolean addProbono(UserWordEntity probono) throws SQLException{
-		return UserWordDAO.addProbono(probono);
-	}
-	//기존 probono 수정
-	public static boolean updateProbono(String probonoId, String probonoPurpose) throws SQLException, NotExistException{
-		notExistProbono(probonoId);
-		return UserWordDAO.updateProbono(probonoId, probonoPurpose);
-	}
-	//probono 삭제
-	public boolean deleteProbono(String probonoId) throws SQLException, NotExistException{
-		notExistProbono(probonoId);
-		return UserWordDAO.deleteProbono(probonoId);
-	}
-		
-	
 	//------------------------------------------------------------------------------------------------
-	//Activist - CRUD
 	public static void addUser(UserEntity user) throws MessageException{
 		EntityManager em = PublicCommon.getEntityManger();
 		log.warn("Entity Manger 생성 기록");
@@ -148,6 +110,7 @@ public class WorldOfWordsCRUDService {
 			throw new NotExistException("검색하는 재능 수혜자가 미 존재합니다.");
 		}
 		log.warn(CommunityId + " 출력 기록");
+		em.close();
 		return Community;
 	}
 	
@@ -161,7 +124,17 @@ public class WorldOfWordsCRUDService {
 		return (ArrayList<CommunityEntity>) list;
 	}
 
+	
 	public static ArrayList<String> getUserWords(String id) throws SQLException {
 		return UserWordDAO.getUserWords(id);
+	}
+
+	public static void deleteUserWord(String id, String word) throws SQLException {
+		UserWordDAO.deleteUserWord(id, word);
+	}
+
+	public static void saveUserWord(String id, String userWord) throws SQLException {
+		UserWordDAO.saveUserWord(id, userWord);
+		
 	}
 }

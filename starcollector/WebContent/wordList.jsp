@@ -49,8 +49,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 						} else {
 					%>
 					<c:forEach items="${requestScope.userwords}" var="userword">
-								${userword}
-						<hr>
+								${userword} <button onclick="location.href='worldofwords?command=deleteUserWord&id=${sessionScope.id}&word=${userword}'">삭제</button><br>
 					</c:forEach>
 					<%
 						}
@@ -138,6 +137,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 							class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
 						${word.word}
 					</h2>
+						<a href="worldofwords?command=saveUserWord&id=${sessionScope.id}&word=${word.word}" style="float: right">저장</a>
 					<div class="w3-container">
 						<h5 class="w3-opacity">
 							<b></b>
