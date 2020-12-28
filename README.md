@@ -1,5 +1,5 @@
 # 오늘의 단어(World of Words) 🗃️
-세상에 존재하는 모든 단어를 임의로 생성해 주는 사이트입니다.
+국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 존재하는 모든 단어를 임의로 생성해 주는 사이트입니다.
 ___
 ## 🎶 Motivation of selecting topic
 아이디어가 너무 나오지 않아서 키워드를 얻고자 '랜덤 단어 생성 사이트'를 찾아보던 중, [영어로 된 사이트](https://randomwordgenerator.com/)는 상당히 완성도가 높았으나, 한국어도 된 사이트에서는 그다지 완성도가 높지 않은 듯하여 직접 만들어보게 되었습니다.
@@ -21,22 +21,44 @@ ___
 ```
 * WorldOfWords(임시 작성)
 
-├── node_modules
-├── public
-|     └── stylesheets
-|       └── style.css
+├── www.controller
+|      └── WorldOfWordsController.java
+├── www.exception
+|      ├── Messageexception.java
+|      └── NotExistException.java
+├── www.model
+|      ├── LoginService.java
+|      ├── UserCommunityDAO.java
+|      ├── UserWordDAO.java
+|      ├── WordApi.java
+|      └── WorldOfWordsCRUDService.java
+├── www.model.dto
+|      ├── CommunityEntity.java
+|      ├── UserEntity.java
+|      └── UserWordEntity.java
+├── www.model.util
+|      ├── DBUtil.java
+|      └── PublicCommon.java
+├── sql
+|    ├── worldOfWordsDDL.sql
+|    └── worldOfWordsDML.sql
 ├── views
-|     ├── todo.ejs
-|     └── todoEdit.ejs
-├── models
-|    └── TodoTask.js
-├── index.js
-├── package.json
-├── .env
+|    ├── CommunityDetail.jsp
+|    ├── CommunityList.jsp
+|    ├── CommunityUpdate.jsp
+|    ├── login-page.css
+|    ├── login-page.jsp
+|    ├── showError.jsp
+|    ├── wordlist.jsp
+|    ├── UserDetail.jsp
+|    ├── UserInsert.jsp
+|    └── UserUpdate.sql
+└── index.html
 ```
 
 ## 🔰 How to USE?
-
+수정 예정...
 ## ⚠️ Issue
-
+수정 예정...
 ## 📝 Conclusion
+수정 예정...
