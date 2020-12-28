@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,8 +16,6 @@ import probono.model.LoginService;
 import probono.model.WordApi;
 import probono.model.WorldOfWordsCRUDService;
 import probono.model.dto.UserEntity;
-import probono.model.dto.UserWordEntity;
-import probono.model.util.PublicCommon;
 
 @Slf4j
 
@@ -183,7 +180,7 @@ public class WorldOfWordsController extends HttpServlet {
 			url = "wordList.jsp";
 		}
 		getUserWords(request, response);
-		request.setAttribute("words", words);
+		request.getSession().setAttribute("words", words);
 		request.getRequestDispatcher(url).forward(request, response);
 	}
 	/*

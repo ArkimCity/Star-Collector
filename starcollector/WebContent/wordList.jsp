@@ -38,7 +38,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 							out.print("pleas <a href=\"login-page.jsp\">Log In</a> to save your words");
 						} else {
 							out.print("Welcome! " + id);
-							out.print("<a href=\"worldofwords?command=logout&userwordscommand=getUserWords\"> Log Out</a>");
+							out.print("<a href=\"worldofwords?command=logout&userwordscommand=getCurrentWords\"> Log Out</a>");
 
 						}
 					%>
@@ -130,7 +130,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 		<!-- Right Column -->
 		<div class="w3-twothird">
-			<c:forEach items="${requestScope.words}" var="word">
+			<c:forEach items="${sessionScope.words}" var="word">
 				<div class="w3-container w3-card w3-white w3-margin-bottom">
 					<h2 class="w3-text-grey w3-padding-16">
 						<i
