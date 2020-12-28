@@ -23,15 +23,6 @@ import probono.model.util.DBUtil;
 import probono.model.util.PublicCommon;
 
 public class UserCommunityDAO {
-
-	public static void main(String[] args) {
-		try {
-			System.out.println(getAllComunities().toString());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	// 프로보노 프로젝트 저장
 	public static boolean addUserCommunity(CommunityEntity userCommunity) throws SQLException {
@@ -94,8 +85,7 @@ public class UserCommunityDAO {
 	}
 
 	// 프로보노 프로젝트 id로 해당 프로보노프로젝트 검색
-	public static CommunityEntity getUserCommunity(int probonoProjectId) throws SQLException {
-		EntityManager em = PublicCommon.getEntityManger();
+	public static CommunityEntity getUserCommunity(EntityManager em, int probonoProjectId) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -117,8 +107,7 @@ public class UserCommunityDAO {
 	}
 
 	// 모든 프로보노 프로젝트 검색
-	public static ArrayList<CommunityEntity> getAllComunities() throws SQLException {
-		EntityManager em = PublicCommon.getEntityManger();
+	public static ArrayList<CommunityEntity> getAllComunities(EntityManager em) throws SQLException {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -135,7 +124,6 @@ public class UserCommunityDAO {
 			}
 		} finally {
 			DBUtil.close(con, pstmt, rset);
-			em.close();
 		}
 		return list;
 	}

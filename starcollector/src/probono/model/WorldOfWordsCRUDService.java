@@ -38,7 +38,7 @@ public class WorldOfWordsCRUDService {
 			log.warn("Entity Manger 종료 기록");
 		}
 	}
-	
+	 
 	public static void updateUser(String userId, String nickname) throws MessageException {		
 		EntityManager em = PublicCommon.getEntityManger();
 		EntityTransaction tx = em.getTransaction();
@@ -69,6 +69,8 @@ public class WorldOfWordsCRUDService {
 		} catch (Exception s) {
 			tx.rollback();
 			throw new MessageException(s +"삭제 오류입니다.");
+		}finally {
+			em.close();
 		}
 	}
 	
@@ -85,6 +87,8 @@ public class WorldOfWordsCRUDService {
 		} catch (Exception s) {
 			tx.rollback();
 			throw new MessageException(s +"이미 존재하는 ID입니다 다시 시도 하세요");
+		}finally {
+			em.close();
 		}
 	}
 	
@@ -100,6 +104,8 @@ public class WorldOfWordsCRUDService {
 		} catch (Exception s) {
 			tx.rollback();
 			throw new MessageException(s +"삭제 오류입니다.");
+		}finally {
+			em.close();
 		}
 	}
 	
@@ -121,6 +127,7 @@ public class WorldOfWordsCRUDService {
 			throw new NotExistException("현재 재능 기부자가 존재하지 않습니다.");
 		}
 		log.warn("community list 출력 기록");
+		em.close();
 		return (ArrayList<CommunityEntity>) list;
 	}
 

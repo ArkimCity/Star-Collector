@@ -16,7 +16,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 	font-family: "Roboto", sans-serif
 }
 </style>
-<title>Insert title here</title>
+<title>World of Words</title>
 <jsp:include page="NavigationBar.jsp"></jsp:include>
 </head>
 <body>

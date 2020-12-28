@@ -1,10 +1,11 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>World of Words</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -44,23 +45,27 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					%>
 					<hr>
 					<%
-						if (request.getAttribute("userwords") == null) {
-							out.print("아직 저장하신 단어가 없네요! 나만의 단어를 저장해주세요!");
+						if (id == null) {
+							out.print("로그인 하시고 나만의 단어를 저장해주세요!");
 						} else {
 					%>
 					<c:forEach items="${requestScope.userwords}" var="userword">
 								${userword} <button onclick="location.href='worldofwords?command=deleteUserWord&id=${sessionScope.id}&word=${userword}'">삭제</button><br>
 					</c:forEach>
-					<%
-						}
-					%>
 					<br>
-					<a href="brainStorm.jsp">Let's BrainStorm With these!</a>
+					<a href="brainStorm.jsp">충분히 저장되셨다면 브레인스토밍하러 가볼까요!</a>
+					<% 
+					} 
+					%>
 					<hr>
-					<form action="worldofwords?command=getWordList&userwordscommand=getUserWords" method="post">
-						<input type="submit" class="w3-large w3-animate-top"
-							value="FIND OUT"></input> <input type="text" name="inputnumber"
-							value="10" />words<br>
+					<form action="worldofwords?command=saveUserWord&id=${sessionScope.id}&userwordscommand=getCurrentWords" method="post">
+						<input type="submit" class="w3-large w3-animate-top" value="저장"></input>
+						<input type="text" name="word" />수동도 가능!<br>
+					</form>
+					<hr>
+					<form action="worldofwords?command=getWordList&userwordscommand=getCurrentWords" method="post">
+						<input type="submit" class="w3-large w3-animate-top" value="FIND OUT"></input> 
+						<input type="text" name="inputnumber" value="10" />   words<br>
 					</form>
 					<hr>
 					also find out our <a href="wordCommunity.jsp">community</a>! <br>

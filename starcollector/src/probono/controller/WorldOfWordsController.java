@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
 import probono.model.LoginService;
-import probono.model.WordApi;
+import probono.model.Crawler;
 import probono.model.WorldOfWordsCRUDService;
 import probono.model.dto.UserEntity;
 
@@ -60,8 +60,10 @@ public class WorldOfWordsController extends HttpServlet {
 		String id = (String) request.getSession().getAttribute("id");
 		String word = request.getParameter("word");
 
-		if (id == null || id.length() == 0 || word == null) {
-			request.setAttribute("errorMsg", "정보가 부족합니다");
+		if (id == null || id.length() == 0) {
+			request.setAttribute("errorMsg", "로그인 하셔야 저장이 가능합니다!");
+		} else if (word == null) {
+				request.setAttribute("errorMsg", "단어를 적어주셔야죠!");
 		} else {
 			try {
 				WorldOfWordsCRUDService.saveUserWord(id, word);
@@ -173,10 +175,10 @@ public class WorldOfWordsController extends HttpServlet {
 		String inputnumber = request.getParameter("inputnumber");
 		String url = "showError.jsp";
 		if (inputnumber == null) {
-			words = WordApi.crawler("10");
+			words = Crawler.crawler("10");
 			url = "wordList.jsp";
 		} else {
-			words = WordApi.crawler(inputnumber);
+			words = Crawler.crawler(inputnumber);
 			url = "wordList.jsp";
 		}
 		getUserWords(request, response);
