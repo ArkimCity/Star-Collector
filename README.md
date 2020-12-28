@@ -14,8 +14,13 @@ ___
 * OracleDB
 
 ## 📂 Structure
+![WorldOfWords](https://user-images.githubusercontent.com/17983434/103183401-86c24c80-48f5-11eb-8153-4425d9aa1a31.PNG)
+
+___
 
 ```
+* WorldOfWords(임시 작성)
+
 ├── node_modules
 ├── public
 |     └── stylesheets
