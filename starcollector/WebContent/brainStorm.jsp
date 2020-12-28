@@ -20,14 +20,19 @@ html, body, h1, h2, h3, h4, h5, h6 {
 <jsp:include page="NavigationBar.jsp"></jsp:include>
 </head>
 <body>
-	<%
-		String id = (String) session.getAttribute("id");
-		if (id == null) {
-			out.print("pleas <a href=\"login-page.jsp\">Log In</a> to save your words");
-		} else {
-			out.print("<h1>아직 로그인 하지 않았나보네요ㅜㅜ 이 서비스는 로그인 하신 분께만 제공해드립니다</h1>");
-			out.print("<h1>사진, 연관 검색어, 예시 문장 등으로 </h1>");
-		}
-	%>
+	<div style="margin-top: 100px;">
+		<center>
+			<%
+				String id = (String) session.getAttribute("id");
+				if (id == null) {
+					out.print("<h2>아직 로그인 하지 않았나보네요ㅜㅜ 이 서비스는 로그인 하신 분께만 제공해드립니다</h2>");
+					out.print("<h2><a href=\"login-page.jsp\">Log In</a> 해주세요!</h2>");
+				} else {
+					out.print("<h2>사진, 연관 검색어, 예시 문장 등으로 같이 브레인스토밍 해봐요!</h2>");
+					out.print("<h2><a href=\"brainStormResult.jsp\">가볼까요!!</a></h2>");
+				}
+			%>
+		</center>
+	</div>
 </body>
 </html>

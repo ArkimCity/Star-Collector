@@ -54,18 +54,16 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					</c:forEach>
 					<br>
 					<a href="brainStorm.jsp">충분히 저장되셨다면 브레인스토밍하러 가볼까요!</a>
-					<% 
-					} 
-					%>
+					<% } %>
 					<hr>
 					<form action="worldofwords?command=saveUserWord&id=${sessionScope.id}&userwordscommand=getCurrentWords" method="post">
 						<input type="submit" class="w3-large w3-animate-top" value="저장"></input>
-						<input type="text" name="word" />수동도 가능!<br>
+						<input type="text" name="word" /> 수동도 가능!<br>
 					</form>
 					<hr>
 					<form action="worldofwords?command=getWordList&userwordscommand=getCurrentWords" method="post">
 						<input type="submit" class="w3-large w3-animate-top" value="FIND OUT"></input> 
-						<input type="text" name="inputnumber" value="10" />   words<br>
+						<input type="text" name="inputnumber" value="10" /> words<br>
 					</form>
 					<hr>
 					also find out our <a href="wordCommunity.jsp">community</a>! <br>
