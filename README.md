@@ -1,5 +1,5 @@
 # 오늘의 단어(World of Words) 🗃️
-국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 존재하는 모든 단어를 임의로 생성해 주는 사이트입니다.
+국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 등재된 모든 단어를 임의로 생성해 주는 사이트입니다.
 ___
 ## 🎶 Motivation of selecting topic
 아이디어가 너무 나오지 않아서 키워드를 얻고자 '랜덤 단어 생성 사이트'를 찾아보던 중, [영어로 된 사이트](https://randomwordgenerator.com/)는 상당히 완성도가 높았으나, 한국어도 된 사이트에서는 그다지 완성도가 높지 않은 듯하여 직접 만들어보게 되었습니다.
@@ -13,10 +13,19 @@ ___
 * CSS
 * OracleDB
 
-## 📂 Structure
-![WorldOfWords](https://user-images.githubusercontent.com/17983434/103183401-86c24c80-48f5-11eb-8153-4425d9aa1a31.PNG)
+## 📊 Structure
+<details>
+<summary>🗂️ ER Diagram</summary>
+<div markdown="1">
 
-___
+![WorldofWords](https://user-images.githubusercontent.com/17983434/103230869-d3e80200-4979-11eb-9e97-5f9d7725a2bc.png)
+
+</div>
+</details>
+
+<details>
+<summary>📂 Folder Structure</summary>
+<div markdown="1">
 
 ```
 * WorldOfWords(임시 작성)
@@ -24,13 +33,13 @@ ___
 ├── www.controller
 |      └── WorldOfWordsController.java
 ├── www.exception
-|      ├── Messageexception.java
+|      ├── MessageException.java
 |      └── NotExistException.java
 ├── www.model
+|      ├── Crawler.java
 |      ├── LoginService.java
 |      ├── UserCommunityDAO.java
 |      ├── UserWordDAO.java
-|      ├── WordApi.java
 |      └── WorldOfWordsCRUDService.java
 ├── www.model.dto
 |      ├── CommunityEntity.java
@@ -43,22 +52,40 @@ ___
 |    ├── worldOfWordsDDL.sql
 |    └── worldOfWordsDML.sql
 ├── views
-|    ├── CommunityDetail.jsp
+|    ├── about.jsp
+|    ├── brainStorm.jsp
+|    ├── brainStormResult.jsp
 |    ├── CommunityList.jsp
-|    ├── CommunityUpdate.jsp
 |    ├── login-page.css
 |    ├── login-page.jsp
+|    ├── NavigationBar.jsp
 |    ├── showError.jsp
-|    ├── wordlist.jsp
 |    ├── UserDetail.jsp
-|    ├── UserInsert.jsp
-|    └── UserUpdate.sql
+|    ├── UserInsert.html
+|    ├── UserUpdate.jsp
+|    └── wordlist.jsp
 └── index.html
 ```
 
+</div>
+</details>
+
 ## 🔰 How to USE?
-수정 예정...
-## ⚠️ Issue
-수정 예정...
+발표 전까지 완성된 결과물을 바탕으로 작성하도록 하겠습니다.
+
+
 ## 📝 Conclusion
-수정 예정...
+이번 프로젝트를 통해 OracleDB부터 WEB상에 화면까지 통합적으로 개발하는 프로젝트를 수행하였습니다. 
+
+특히 JSP를 사용하여 MVC 패턴을 적용했기 때문에 사용자에게 보여지는 화면인 View, 실제 비즈니스로 로직이 들어가는 Model, 
+
+그리고 View와 Model을 연결시켜주는 Controller에서 View와 Model 부분의 분업으로 훨씬 더 효율적인 개발이 가능했습니다.
+
+이는 공통되는 로직의 재사용(비슷한 내용의 프로젝트 등)이 가능하여 생산성이 높아지기 때문입니다.
+
+추가로 크롤링 사용을 통해 외부 API를 크롤링하는 방법을 터득할 수 있었습니다.
+차후에 배울 Spring에서 'Jsoup 라이브러리'를 활용한 웹 크롤링에 도움이 될 듯 합니다.
+
+이상으로 발표 마치겠습니다.
+
+감사합니다. :)
