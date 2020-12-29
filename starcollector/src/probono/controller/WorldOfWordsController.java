@@ -3,6 +3,7 @@ package probono.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -61,7 +62,30 @@ public class WorldOfWordsController extends HttpServlet {
 
 	private void brainStormResult(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url = "showError.jsp";
+		ArrayList<HashMap<String, ArrayList<String>>> relatedWordMap = new ArrayList<HashMap<String, ArrayList<String>>>();
+		ArrayList<HashMap<String, ArrayList<String>>> relatedWordMap2 = new ArrayList<HashMap<String, ArrayList<String>>>();
+		ArrayList<HashMap<String, String>> imageBigList = new ArrayList<HashMap<String, String>>();
 		try {
+			getUserWords(request, response);
+			for (String word : (ArrayList<String>) request.getAttribute("userwords")) {
+				
+				for (HashMap<String, String> image : Crawler.googleImageCrawler(word)) {
+					imageBigList.add(image);
+				}
+				
+				HashMap<String, ArrayList<String>> minimap = new HashMap<String, ArrayList<String>>();
+				minimap.put(word, Crawler.relatedNaverCrawler(word));
+				relatedWordMap.add(minimap);
+				
+				HashMap<String, ArrayList<String>> minimap2 = new HashMap<String, ArrayList<String>>();
+				minimap2.put(word, Crawler.relatedGoogleCrawler(word));
+				relatedWordMap2.add(minimap2);
+			}
+			request.setAttribute("imageBigList", imageBigList);
+			Collections.shuffle(imageBigList);
+			request.setAttribute("imageRandomBigList", imageBigList);
+			request.setAttribute("relatedWordMap", relatedWordMap);
+			request.setAttribute("relatedWordMap2", relatedWordMap2);
 			url = "brainStormResult.jsp";
 		} catch (Exception s) {
 			request.setAttribute("errorMsg", s.getMessage());

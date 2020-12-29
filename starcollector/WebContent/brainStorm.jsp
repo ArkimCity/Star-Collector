@@ -29,7 +29,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					out.print("<h2><a href=\"login-page.jsp\">Log In</a> 해주세요!</h2>");
 				} else {
 					out.print("<h2>사진, 연관 검색어, 예시 문장 등으로 같이 브레인스토밍 해봐요!</h2>");
-					out.print("<h2><a href=\"brainStormResult.jsp\">가볼까요!!</a></h2>");
+					out.print("<h2><a href=\"worldofwords?command=brainStormResult\">가볼까요!!</a></h2>");
 				}
 			%>
 		</center>
