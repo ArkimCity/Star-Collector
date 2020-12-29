@@ -18,7 +18,7 @@ CREATE TABLE users (
 CREATE TABLE userword (
         saveId        NUMBER(5)                PRIMARY KEY,
         userId        VARCHAR2(30)        NOT NULL,
-        word        VARCHAR2(255)
+        word        VARCHAR2(255) UNIQUE
 );
 
 CREATE TABLE community (

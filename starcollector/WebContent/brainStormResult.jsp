@@ -133,7 +133,7 @@ Resources1×0
 	</center>
 	<!-- image grid -->
 	<div class="child-page-listing" style="margin-top: 100px">
-		<h2>그 다음 사진들을 다 섞어서 보여드릴게요!</h2>
+		<h2>그 다음 구글에서 해당 검색어로 검색한 사진들을 다 섞어서 보여드릴게요!</h2>
 		<div class="grid-container">
 			<c:forEach items="${requestScope.imageRandomBigList}" var="image">
 				<article id="3691" class="location-listing">

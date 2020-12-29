@@ -37,29 +37,6 @@ public class UserWordDAO {
 		return false;
 	}
 
-
-	//수정
-	//프로보노 id로 프로보노 목적 수정하기
-	public static boolean updateUserWord(String probonoId, String probonoPurpose) throws SQLException{
-		Connection con = null;
-		PreparedStatement pstmt = null;
-		try{
-			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("update probono set probono_purpose=? where probono_id=?");
-			pstmt.setString(1, probonoPurpose);
-			pstmt.setString(2, probonoId);
-			
-			int result = pstmt.executeUpdate();
-			if(result == 1){
-				return true;
-			}
-		}finally{
-			DBUtil.close(con, pstmt);
-		}
-		return false;
-	}
-
-
 	//삭제 
 	public static boolean deleteUserWord(String id, String word) throws SQLException{
 		Connection con = null;

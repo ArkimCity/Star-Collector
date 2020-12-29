@@ -112,8 +112,8 @@ public class WorldOfWordsController extends HttpServlet {
 
 		if (id == null || id.length() == 0) {
 			request.setAttribute("errorMsg", "로그인 하셔야 저장이 가능합니다!");
-		} else if (word == null) {
-				request.setAttribute("errorMsg", "단어를 적어주셔야죠!");
+		} else if (word == null || word.length() == 0) {
+			request.setAttribute("errorMsg", "단어를 적어주셔야죠!");
 		} else {
 			try {
 				WorldOfWordsCRUDService.saveUserWord(id, word);
