@@ -85,6 +85,7 @@ public class Crawler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		return resultlist;
 	}
 
@@ -92,64 +93,66 @@ public class Crawler {
 		System.out.println("네이버 연관 검색어");
 		ArrayList<String> resultList = new ArrayList<String>();
 		String url;
-		Document doc; 
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="+encoded;
-		System.out.println(url);		
-		
+		Document doc;
+
+		String encoded = URLEncoder.encode(input, "utf-8"); // ﻿※
+		url = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + encoded;
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements relatedwords = doc.select("div.tit");
-		
+
 		System.out.println(relatedwords.size());
-		
-		for(Element e : relatedwords) {
+
+		for (Element e : relatedwords) {
 			resultList.add(StringUtils.substringBetween(e.toString(), "tit\">", "<"));
 		}
 		System.out.println("프로그램 종료");
 		return resultList;
 	}
-	
+
 	public static ArrayList<String> relatedGoogleCrawler(String input) throws IOException {
 		System.out.println("구글 연관 검색어");
 		ArrayList<String> resultList = new ArrayList<String>();
 		String url;
 		Document doc;
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://www.google.com/search?q="+encoded;
-		System.out.println(url);		
-		
+
+		String encoded = URLEncoder.encode(input, "utf-8"); // ﻿※
+		url = "https://www.google.com/search?q=" + encoded;
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements relatedwords = doc.select("p.nVcaUb");
 		System.out.println(relatedwords);
 		System.out.println(relatedwords.size());
-		
-		for(Element e : relatedwords) {
-			resultList.add(StringUtils.substringBetween(StringUtils.substringBetween(e.toString(), "\">", "</p>"), "\">", "</a>"));
+
+		for (Element e : relatedwords) {
+			resultList.add(StringUtils.substringBetween(StringUtils.substringBetween(e.toString(), "\">", "</p>"),
+					"\">", "</a>"));
 		}
 		System.out.println("프로그램 종료");
 		return resultList;
 	}
-	
+
 	public static ArrayList<HashMap<String, String>> googleImageCrawler(String input) throws IOException {
 		System.out.println("구글 이미지 검색중");
 		ArrayList<HashMap<String, String>> resultList = new ArrayList<HashMap<String, String>>();
 		String url;
-		Document doc; 
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://www.google.com/search?q="+ encoded + "&newwindow=1&sxsrf=ALeKk015_AA4LJD6gWU_Az6s8DGuVZZMPA:1609206583430&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv2ZnWifLtAhUQG6YKHaBCBkUQ_AUoAXoECBMQAw&biw=1247&bih=616";
-		System.out.println(url);		
-		
+		Document doc;
+
+		String encoded = URLEncoder.encode(input, "utf-8");
+		url = "https://www.google.com/search?q=" + encoded
+				+ "&newwindow=1&sxsrf=ALeKk015_AA4LJD6gWU_Az6s8DGuVZZMPA:1609206583430&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv2ZnWifLtAhUQG6YKHaBCBkUQ_AUoAXoECBMQAw&biw=1247&bih=616";
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements images = doc.select("img");
 		System.out.println(images.size());
-		
-		for(Element e : images) {
+
+		for (Element e : images) {
 			HashMap<String, String> minimap = new HashMap<String, String>();
 			minimap.put("title", StringUtils.substringBetween(e.toString(), "alt=\"", "\""));
 			minimap.put("source", e.toString().replace("data-src", "src"));
@@ -159,23 +162,23 @@ public class Crawler {
 		System.out.println("프로그램 종료");
 		return resultList;
 	}
-	
+
 	public static ArrayList<HashMap<String, String>> naverImageCrawler(String input) throws IOException {
 		System.out.println("네이버 이미지 검색중");
 		ArrayList<HashMap<String, String>> resultList = new ArrayList<HashMap<String, String>>();
 		String url;
-		Document doc; 
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=image&query="+ encoded;
-		System.out.println(url);		
-		
+		Document doc;
+
+		String encoded = URLEncoder.encode(input, "utf-8"); // ﻿※
+		url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=image&query=" + encoded;
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements relatedwords = doc.select("div.thumb");
 		System.out.println(relatedwords.size());
-		
-		for(Element e : relatedwords) {
+
+		for (Element e : relatedwords) {
 			HashMap<String, String> minimap = new HashMap<String, String>();
 			minimap.put("title", StringUtils.substringBetween(e.toString(), "alt=\"", "\">"));
 			minimap.put("source", e.toString());
