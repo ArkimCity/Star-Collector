@@ -23,13 +23,10 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 <!-- Page Container -->
 <div class="w3-main w3-content w3-padding" style="max-width:1200px;margin-top:100px">
-
 	<!-- The Grid -->
 	<div class="w3-row-padding">
-
 		<!-- Left Column -->
 		<div class="w3-third" style="height: 100%;">
-
 			<div class="w3-white w3-text-grey w3-card-4">
 				<div class="w3-container">
 					<br>
@@ -40,7 +37,6 @@ html, body, h1, h2, h3, h4, h5, h6 {
 						} else {
 							out.print("Welcome! " + id);
 							out.print("<a href=\"worldofwords?command=logout&userwordscommand=getCurrentWords\"> Log Out</a>");
-
 						}
 					%>
 					<hr>
@@ -53,7 +49,7 @@ html, body, h1, h2, h3, h4, h5, h6 {
 								${userword} <button onclick="location.href='worldofwords?command=deleteUserWord&id=${sessionScope.id}&word=${userword}'">삭제</button><br>
 					</c:forEach>
 					<br>
-					<a href="brainStorm.jsp">충분히 저장되셨다면 브레인스토밍하러 가볼까요!</a>
+					<a href="worldofwords?command=brainStorm&userwordscommand=getCurrentWords">충분히 저장되셨다면 브레인스토밍하러 가볼까요!</a>
 					<% } %>
 					<hr>
 					<form action="worldofwords?command=saveUserWord&id=${sessionScope.id}&userwordscommand=getCurrentWords" method="post">
@@ -96,7 +92,6 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					all of your specifications, all you have to do is to press the
 					Generate Random Words button, and a list of random words will
 					appear. Below are some of the common ways people use this tool.
-
 					<hr>
 					<h1>Games</h1>
 					This tool can be useful for games like Pictionary or MadLibs. Since
@@ -106,7 +101,6 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					ever considered to fill in the blank spaces. The tool has the
 					potential to help with any word game that doesn't require a
 					specific word.
-
 					<hr>
 					<h1>Creative Writing</h1>
 					For those who write, this tool can be an excellent device to aid in
@@ -119,7 +113,6 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					use the words in the exact order they were generated. In this way,
 					writers can challenge their creativity to push their writing
 					skills.
-
 					<hr>
 					<h1>Spelling and Vocabulary</h1>
 					This tool can be an excellent way to improve vocabulary or practice
@@ -129,10 +122,8 @@ html, body, h1, h2, h3, h4, h5, h6 {
 					spelling for the randomized words generated. <br> <br>
 				</div>
 			</div>
-
 			<!-- End Left Column -->
 		</div>
-
 		<!-- Right Column -->
 		<div class="w3-twothird" >
 			<c:forEach items="${sessionScope.words}" var="word">
@@ -170,6 +161,5 @@ html, body, h1, h2, h3, h4, h5, h6 {
 		class="fa fa-twitter w3-hover-opacity"></i> <i
 		class="fa fa-linkedin w3-hover-opacity"></i>
 </footer>
-
 </body>
 </html>

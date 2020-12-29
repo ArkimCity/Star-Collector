@@ -43,6 +43,10 @@ public class WorldOfWordsController extends HttpServlet {
 				deleteUserWord(request, response); 
 			}else if(command.equals("getWordList")){//단어리스트에 단어 보내주는 역할
 				getWordList(request, response); 
+			}else if(command.equals("brainStorm")){//단어리스트에 단어 보내주는 역할
+				brainStorm(request, response); 
+			}else if(command.equals("brainStormResult")){//단어리스트에 단어 보내주는 역할
+				brainStormResult(request, response); 
 			}else {
 				request.setAttribute("errorMsg", "잘못된 명령입니다. 다시 시도해 주십시오");
 				request.getRequestDispatcher("showError.jsp").forward(request, response);
@@ -53,6 +57,28 @@ public class WorldOfWordsController extends HttpServlet {
 			request.getRequestDispatcher("showError.jsp").forward(request, response);
 			s.printStackTrace();
 		}
+	}
+
+	private void brainStormResult(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String url = "showError.jsp";
+		try {
+			url = "brainStormResult.jsp";
+		} catch (Exception s) {
+			request.setAttribute("errorMsg", s.getMessage());
+			s.printStackTrace();
+		}
+		request.getRequestDispatcher(url).forward(request, response);
+	}
+
+	private void brainStorm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String url = "showError.jsp";
+		try {
+			url = "brainStorm.jsp";
+		} catch (Exception s) {
+			request.setAttribute("errorMsg", s.getMessage());
+			s.printStackTrace();
+		}
+		request.getRequestDispatcher(url).forward(request, response);
 	}
 
 	private void saveUserWord(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

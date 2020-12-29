@@ -22,7 +22,7 @@ public class UserWordDAO {
 		PreparedStatement pstmt = null;
 		try{
 			con = DBUtil.getConnection();
-			pstmt = con.prepareStatement("insert into userword values(?,?)");
+			pstmt = con.prepareStatement("insert into userword values(userword_id_seq.nextval,?,?)");
 			pstmt.setString(1, id);
 			pstmt.setString(2, word);
 			
@@ -93,7 +93,7 @@ public class UserWordDAO {
 			
 			list = new ArrayList<String>();
 			while(rset.next()){
-				list.add(rset.getString(2));
+				list.add(rset.getString(3));
 			}
 		}finally{
 			DBUtil.close(con, pstmt, rset);

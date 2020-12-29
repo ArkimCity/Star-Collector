@@ -30,7 +30,7 @@
 		onclick="w3_close()" class="w3-bar-item w3-button">Home</a> 
 		<a href="worldofwords?command=getWordList&userwordscommand=getUserWords"
 		onclick="w3_close()" class="w3-bar-item w3-button">Find out Words</a>
-		<a href="brainStorm.jsp"
+		<a href="worldofwords?command=brainStorm&userwordscommand=getCurrentWords"
 		onclick="w3_close()" class="w3-bar-item w3-button">Let's BrainStorm</a>
 	<a href="about.jsp" onclick="w3_close()" class="w3-bar-item w3-button">About</a>
 </nav>
