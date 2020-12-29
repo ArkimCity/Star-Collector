@@ -95,7 +95,7 @@ public class Crawler {
 		String url;
 		Document doc;
 
-		String encoded = URLEncoder.encode(input, "utf-8"); // ﻿※
+		String encoded = URLEncoder.encode(input, "utf-8");
 		url = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + encoded;
 		System.out.println(url);
 
@@ -118,7 +118,7 @@ public class Crawler {
 		String url;
 		Document doc;
 
-		String encoded = URLEncoder.encode(input, "utf-8"); // ﻿※
+		String encoded = URLEncoder.encode(input, "utf-8");
 		url = "https://www.google.com/search?q=" + encoded;
 		System.out.println(url);
 
@@ -169,7 +169,7 @@ public class Crawler {
 		String url;
 		Document doc;
 
-		String encoded = URLEncoder.encode(input, "utf-8"); // ﻿※
+		String encoded = URLEncoder.encode(input, "utf-8");
 		url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=image&query=" + encoded;
 		System.out.println(url);
 
@@ -197,7 +197,6 @@ public class Crawler {
 <details>
 <summary>🗂️ ER Diagram</summary>
 <div markdown="1">
-<br>
 
 대략적인 테이블 구조는 다음과 같습니다.
 
@@ -236,8 +235,8 @@ public class Crawler {
 |      ├── DBUtil.java
 |      └── PublicCommon.java
 ├── sql
-|    ├── worldOfWordsDDL.sql
-|    └── worldOfWordsDML.sql
+|    ├── wowDDL.sql
+|    └── wowDML.sql
 ├── views
 |    ├── about.jsp
 |    ├── brainStorm.jsp
@@ -273,7 +272,6 @@ public class Crawler {
   <img src="https://user-images.githubusercontent.com/17983434/103252519-8fcc2000-49c0-11eb-8812-8875ef722830.gif" width="50%" height="50%" title="3" alt="3" />
 
 * 단어를 여러 개 저장한 후, 연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.
-
 
 ## 📝Conclusion
 이번 프로젝트를 통해 OracleDB부터 WEB상에 화면까지 통합적으로 개발하는 프로젝트를 수행하였습니다. 
