@@ -1,5 +1,5 @@
 # 오늘의 단어(World of Words) 🗃️
-국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 등재된 모든 단어를 임의로 생성해주는 사이트입니다.
+아이디어가 떠오르지 않아 고통받던 우리는 이참에 앞으로도 우리의 브레인스토밍에 도움이 되길 바라면서 제작한 사이트입니다. 국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 등재된 모든 단어를 임의로 생성해보고 생성된 혹은 떠오른 단어를 저장해 구글과 네이버에 연관 검색어와 사진 등을 이용해 브레인스토밍에 조금이나마 도움이 되고자 제작해 보았습니다.
 
 ## 📖Content
 * [1. 주제 선정(Motivation of selecting topic)](#🎶Motivation-of-selecting-topic)
@@ -21,13 +21,176 @@
 * OracleDB
 
 ## 🧩Implementation
-* 사용자는 랜덤으로 추출하고 싶은 단어의 갯수(기본값 : 10, 최댓값 : 500000)를 지정한다.
+* 사용자는 랜덤으로 추출하고 싶은 단어의 갯수(기본값 : 10)를 지정한다.
 
 * 사용자는 로그인 후에 모든 기능을 이용할 수 있다.
 
 * 사용자는 랜덤으로 출력된 단어를 저장할 수 있으며, 필요에 따라서는 수동으로 단어를 저장할 수도 있다.
 
+* 랜덤 단어 생성은 표준국어대사전에서 제공하는 API를 기반으로 작성되었으며, 인덱스를 작성하면 웹 페이지로 파싱해 줌(단어와 뜻 정보를 가져옴).
+파싱 받은 데이터를 크롤링해서 연관되는 검색어와 이미지를 웹 상에 출력해 준다.
+
 * 사용자는 단어를 여러 개 저장한 후, 연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.
+<details>
+<summary> Jsoup을 활용한 크롤링(Crawer.java)</summary>
+<div markdown="1">
+
+```java
+/**
+* Jsoup을 활용한 크롤링(Crawer.java)
+*/
+package www.model;
+
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+
+import org.apache.commons.lang.StringUtils;
+
+public class Crawler {
+	static String apikey = "A9CAF26B128DB44DA671FA8334A73CE9";
+
+	public static ArrayList<HashMap<String, String>> crawler(String inputnumber) {
+		String url = "https://stdict.korean.go.kr/api/view.do?key=" + apikey + "&advanced=y&method=TARGET_CODE&q=";
+		ArrayList<HashMap<String, String>> resultlist = new ArrayList<HashMap<String, String>>();
+		Document doc = null;
+		try {
+			while (resultlist.size() < Integer.valueOf(inputnumber)) {
+				HashMap<String, String> finder = new HashMap<String, String>();
+				String number = String.valueOf((int) (Math.random() * 550000));
+				doc = Jsoup.connect(url + number).timeout(10000).get();
+
+				Elements scripts2 = doc.getElementsByTag("word");
+				for (Element e : scripts2) {
+					finder.put("word", StringUtils.substringBetween(e.toString(), "CDATA[", "]").replace("-", "")
+							.replace("^", "").replace(":", ""));
+					break;
+				}
+				Elements scripts3 = doc.getElementsByTag("definition");
+				for (Element e : scripts3) {
+					finder.put("definition", StringUtils.substringBetween(e.toString(), "CDATA[", "]").replace("-", "")
+							.replace("^", "").replace(":", ""));
+					break;
+				}
+				if (finder.get("word") != null) {
+					resultlist.add(finder);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return resultlist;
+	}
+
+	public static ArrayList<String> relatedNaverCrawler(String input) throws IOException {
+		System.out.println("네이버 연관 검색어");
+		ArrayList<String> resultList = new ArrayList<String>();
+		String url;
+		Document doc; 
+		
+		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
+		url = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="+encoded;
+		System.out.println(url);		
+		
+		doc = Jsoup.connect(url).execute().parse();
+		
+		Elements relatedwords = doc.select("div.tit");
+		
+		System.out.println(relatedwords.size());
+		
+		for(Element e : relatedwords) {
+			resultList.add(StringUtils.substringBetween(e.toString(), "tit\">", "<"));
+		}
+		System.out.println("프로그램 종료");
+		return resultList;
+	}
+	
+	public static ArrayList<String> relatedGoogleCrawler(String input) throws IOException {
+		System.out.println("구글 연관 검색어");
+		ArrayList<String> resultList = new ArrayList<String>();
+		String url;
+		Document doc; 
+		
+		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
+		url = "https://www.google.com/search?q="+encoded;
+		System.out.println(url);		
+		
+		doc = Jsoup.connect(url).execute().parse();
+		
+		Elements relatedwords = doc.select("p.nVcaUb");
+		System.out.println(relatedwords);
+		System.out.println(relatedwords.size());
+		
+		for(Element e : relatedwords) {
+			resultList.add(StringUtils.substringBetween(StringUtils.substringBetween(e.toString(), "\">", "</p>"), "\">", "</a>"));
+		}
+		System.out.println("프로그램 종료");
+		return resultList;
+	}
+	
+	public static ArrayList<HashMap<String, String>> googleImageCrawler(String input) throws IOException {
+		System.out.println("구글 이미지 검색중");
+		ArrayList<HashMap<String, String>> resultList = new ArrayList<HashMap<String, String>>();
+		String url;
+		Document doc; 
+		
+		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
+		url = "https://www.google.com/search?q="+ encoded + "&newwindow=1&sxsrf=ALeKk015_AA4LJD6gWU_Az6s8DGuVZZMPA:1609206583430&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv2ZnWifLtAhUQG6YKHaBCBkUQ_AUoAXoECBMQAw&biw=1247&bih=616";
+		System.out.println(url);		
+		
+		doc = Jsoup.connect(url).execute().parse();
+		
+		Elements images = doc.select("img");
+		System.out.println(images.size());
+		
+		for(Element e : images) {
+			HashMap<String, String> minimap = new HashMap<String, String>();
+			minimap.put("title", StringUtils.substringBetween(e.toString(), "alt=\"", "\""));
+			minimap.put("source", e.toString().replace("data-src", "src"));
+			resultList.add(minimap);
+		}
+		resultList.remove(0);
+		System.out.println("프로그램 종료");
+		return resultList;
+	}
+	
+	public static ArrayList<HashMap<String, String>> naverImageCrawler(String input) throws IOException {
+		System.out.println("네이버 이미지 검색중");
+		ArrayList<HashMap<String, String>> resultList = new ArrayList<HashMap<String, String>>();
+		String url;
+		Document doc; 
+		
+		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
+		url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=image&query="+ encoded;
+		System.out.println(url);		
+		
+		doc = Jsoup.connect(url).execute().parse();
+		
+		Elements relatedwords = doc.select("div.thumb");
+		System.out.println(relatedwords.size());
+		
+		for(Element e : relatedwords) {
+			HashMap<String, String> minimap = new HashMap<String, String>();
+			minimap.put("title", StringUtils.substringBetween(e.toString(), "alt=\"", "\">"));
+			minimap.put("source", e.toString());
+			resultList.add(minimap);
+		}
+		resultList.remove(0);
+		System.out.println("프로그램 종료");
+		return resultList;
+	}
+}
+```
+</div>
+</details>
 
 ## 📊Structure
 <details>
@@ -45,7 +208,6 @@
 
 </div>
 </details>
-<br>
 
 <details>
 <summary>📂 Folder Structure</summary>
@@ -93,10 +255,9 @@
 
 </div>
 </details>
-<br>
 
 ## 🔰How to USE?
-* 랜덤으로 추출하고 싶은 단어의 갯수(기본값 : 10, 최댓값 : 500000)를 지정한다.
+* 랜덤으로 추출하고 싶은 단어의 갯수(기본값 : 10)를 지정한다.
   * 예를 들어, 20개(갯수가 많아질 수록 불러오는 속도 저하됨)의 단어를 출력하고 싶다면 다음과 같이 입력한다.
 
   <img src="https://user-images.githubusercontent.com/17983434/103252914-2816d480-49c2-11eb-945d-63e111fe504a.PNG" width="50%" height="50%" title="1" alt="1" />
@@ -108,9 +269,10 @@
   <img src="https://user-images.githubusercontent.com/17983434/103252850-e6862980-49c1-11eb-97c9-83008e583f28.PNG" width="50%" height="50%" title="2" alt="2" />
 
 * 랜덤으로 출력된 단어를 저장할 수 있으며, **필요에 따라서는 수동으로 단어를 저장할 수도 있음.**
-<img src="https://user-images.githubusercontent.com/17983434/103252519-8fcc2000-49c0-11eb-8812-8875ef722830.gif" width="50%" height="50%" title="3" alt="3" />
+  <img src="https://user-images.githubusercontent.com/17983434/103252519-8fcc2000-49c0-11eb-8812-8875ef722830.gif" width="50%" height="50%" title="3" alt="3" />
 
 * 단어를 여러 개 저장한 후, 연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.
+
 
 ## 📝Conclusion
 이번 프로젝트를 통해 OracleDB부터 WEB상에 화면까지 통합적으로 개발하는 프로젝트를 수행하였습니다. 
