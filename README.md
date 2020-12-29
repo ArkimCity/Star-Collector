@@ -32,7 +32,7 @@
 
 * 사용자는 단어를 여러 개 저장한 후, 연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.
 <details>
-<summary> Jsoup을 활용한 크롤링(Crawer.java)</summary>
+<summary>🧩Jsoup을 활용한 크롤링(Crawer.java)</summary>
 <div markdown="1">
 
 ```java
@@ -50,7 +50,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 
 import org.apache.commons.lang.StringUtils;
 
@@ -86,7 +85,6 @@ public class Crawler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		return resultlist;
 	}
 
@@ -117,7 +115,7 @@ public class Crawler {
 		System.out.println("구글 연관 검색어");
 		ArrayList<String> resultList = new ArrayList<String>();
 		String url;
-		Document doc; 
+		Document doc;
 		
 		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
 		url = "https://www.google.com/search?q="+encoded;
