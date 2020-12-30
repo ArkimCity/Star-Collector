@@ -1,4 +1,4 @@
-# 오늘의 단어(World of Words) 🗃️
+# 브레인스토밍 헬퍼(World of Words) 🗃️
 아이디어가 떠오르지 않아 고통받던 우리는 이참에 앞으로도 우리의 브레인스토밍에 도움이 되길 바라면서 제작한 사이트입니다. 국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 등재된 모든 단어를 임의로 생성해보고 생성된 혹은 떠오른 단어를 저장해 구글과 네이버에 연관 검색어와 사진 등을 이용해 브레인스토밍에 조금이나마 도움이 되고자 제작해 보았습니다.
 
 ## 📖Content
@@ -12,7 +12,7 @@
 ## 🎶Motivation of selecting topic
 아이디어가 너무 나오지 않아서 키워드를 얻고자 '랜덤 단어 생성 사이트'를 찾아보던 중, [영어로 된 사이트](https://randomwordgenerator.com/)는 상당히 완성도가 높았으나, 한국어도 된 사이트에서는 그다지 완성도가 높지 않은 듯하여 직접 만들어보게 되었습니다.
 
-여기에 단순히 랜덤한 단어를 보여주는 것에서 그치지 않고 로그인을 통한 저장 및 연관되는 단어(연관 검색어)와 이미지를 통한 브레인스토밍을 하는 과정 등, 다양한 기능을 추가함으로써 <u>브레인스토밍을 통해 아이디어를 얻기 위한 용도로 사용할 수 있는 하나의 수단이 될 수 있을 것으로 기대됩니다</u>.
+여기에 단순히 랜덤한 단어를 보여주는 것에서 그치지 않고 로그인을 통한 저장 및 연관되는 단어(연관 검색어)와 이미지를 통한 브레인스토밍을 하는 과정 등, 다양한 기능을 추가함으로써 <u>사용자가 생각하는 것을 포함해 아이디어를 이끌어 낼때 바운더리 바깥을 위해 랜덤성에 의지해보는 것도 가능하며, 브레인스토밍을 통해 아이디어를 얻기 위한 용도로 사용할 수 있는 하나의 수단이 될 수 있을 것으로 기대됩니다</u>.
 
 ## 🛠️Stack
 * Java
@@ -50,7 +50,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 
 import org.apache.commons.lang.StringUtils;
 
@@ -94,64 +93,66 @@ public class Crawler {
 		System.out.println("네이버 연관 검색어");
 		ArrayList<String> resultList = new ArrayList<String>();
 		String url;
-		Document doc; 
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query="+encoded;
-		System.out.println(url);		
-		
+		Document doc;
+
+		String encoded = URLEncoder.encode(input, "utf-8");
+		url = "https://search.naver.com/search.naver?sm=top_hty&fbm=1&ie=utf8&query=" + encoded;
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements relatedwords = doc.select("div.tit");
-		
+
 		System.out.println(relatedwords.size());
-		
-		for(Element e : relatedwords) {
+
+		for (Element e : relatedwords) {
 			resultList.add(StringUtils.substringBetween(e.toString(), "tit\">", "<"));
 		}
 		System.out.println("프로그램 종료");
 		return resultList;
 	}
-	
+
 	public static ArrayList<String> relatedGoogleCrawler(String input) throws IOException {
 		System.out.println("구글 연관 검색어");
 		ArrayList<String> resultList = new ArrayList<String>();
 		String url;
-		Document doc; 
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://www.google.com/search?q="+encoded;
-		System.out.println(url);		
-		
+		Document doc;
+
+		String encoded = URLEncoder.encode(input, "utf-8");
+		url = "https://www.google.com/search?q=" + encoded;
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements relatedwords = doc.select("p.nVcaUb");
 		System.out.println(relatedwords);
 		System.out.println(relatedwords.size());
-		
-		for(Element e : relatedwords) {
-			resultList.add(StringUtils.substringBetween(StringUtils.substringBetween(e.toString(), "\">", "</p>"), "\">", "</a>"));
+
+		for (Element e : relatedwords) {
+			resultList.add(StringUtils.substringBetween(StringUtils.substringBetween(e.toString(), "\">", "</p>"),
+					"\">", "</a>"));
 		}
 		System.out.println("프로그램 종료");
 		return resultList;
 	}
-	
+
 	public static ArrayList<HashMap<String, String>> googleImageCrawler(String input) throws IOException {
 		System.out.println("구글 이미지 검색중");
 		ArrayList<HashMap<String, String>> resultList = new ArrayList<HashMap<String, String>>();
 		String url;
-		Document doc; 
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://www.google.com/search?q="+ encoded + "&newwindow=1&sxsrf=ALeKk015_AA4LJD6gWU_Az6s8DGuVZZMPA:1609206583430&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv2ZnWifLtAhUQG6YKHaBCBkUQ_AUoAXoECBMQAw&biw=1247&bih=616";
-		System.out.println(url);		
-		
+		Document doc;
+
+		String encoded = URLEncoder.encode(input, "utf-8");
+		url = "https://www.google.com/search?q=" + encoded
+				+ "&newwindow=1&sxsrf=ALeKk015_AA4LJD6gWU_Az6s8DGuVZZMPA:1609206583430&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjv2ZnWifLtAhUQG6YKHaBCBkUQ_AUoAXoECBMQAw&biw=1247&bih=616";
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements images = doc.select("img");
 		System.out.println(images.size());
-		
-		for(Element e : images) {
+
+		for (Element e : images) {
 			HashMap<String, String> minimap = new HashMap<String, String>();
 			minimap.put("title", StringUtils.substringBetween(e.toString(), "alt=\"", "\""));
 			minimap.put("source", e.toString().replace("data-src", "src"));
@@ -161,23 +162,23 @@ public class Crawler {
 		System.out.println("프로그램 종료");
 		return resultList;
 	}
-	
+
 	public static ArrayList<HashMap<String, String>> naverImageCrawler(String input) throws IOException {
 		System.out.println("네이버 이미지 검색중");
 		ArrayList<HashMap<String, String>> resultList = new ArrayList<HashMap<String, String>>();
 		String url;
-		Document doc; 
-		
-		String encoded = URLEncoder.encode(input,"utf-8"); //﻿※
-		url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=image&query="+ encoded;
-		System.out.println(url);		
-		
+		Document doc;
+
+		String encoded = URLEncoder.encode(input, "utf-8");
+		url = "https://search.naver.com/search.naver?sm=tab_hty.top&where=image&query=" + encoded;
+		System.out.println(url);
+
 		doc = Jsoup.connect(url).execute().parse();
-		
+
 		Elements relatedwords = doc.select("div.thumb");
 		System.out.println(relatedwords.size());
-		
-		for(Element e : relatedwords) {
+
+		for (Element e : relatedwords) {
 			HashMap<String, String> minimap = new HashMap<String, String>();
 			minimap.put("title", StringUtils.substringBetween(e.toString(), "alt=\"", "\">"));
 			minimap.put("source", e.toString());
@@ -196,7 +197,6 @@ public class Crawler {
 <details>
 <summary>🗂️ ER Diagram</summary>
 <div markdown="1">
-<br>
 
 대략적인 테이블 구조는 다음과 같습니다.
 
@@ -235,8 +235,8 @@ public class Crawler {
 |      ├── DBUtil.java
 |      └── PublicCommon.java
 ├── sql
-|    ├── worldOfWordsDDL.sql
-|    └── worldOfWordsDML.sql
+|    ├── wowDDL.sql
+|    └── wowDML.sql
 ├── views
 |    ├── about.jsp
 |    ├── brainStorm.jsp
@@ -272,7 +272,6 @@ public class Crawler {
   <img src="https://user-images.githubusercontent.com/17983434/103252519-8fcc2000-49c0-11eb-8812-8875ef722830.gif" width="50%" height="50%" title="3" alt="3" />
 
 * 단어를 여러 개 저장한 후, 연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.
-
 
 ## 📝Conclusion
 이번 프로젝트를 통해 OracleDB부터 WEB상에 화면까지 통합적으로 개발하는 프로젝트를 수행하였습니다. 
