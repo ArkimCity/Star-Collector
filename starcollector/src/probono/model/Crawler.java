@@ -121,7 +121,6 @@ public class Crawler {
 		return resultList;
 	}
 	
-	
 	public static ArrayList<HashMap<String, String>> naverImageCrawler(String input) throws IOException {
 		System.out.println("네이버 이미지 검색중");
 		ArrayList<HashMap<String, String>> resultList = new ArrayList<HashMap<String, String>>();
@@ -146,21 +145,5 @@ public class Crawler {
 		resultList.remove(0);
 		System.out.println("프로그램 종료");
 		return resultList;
-	}
-	
-	public static void main(String[] args) {
-		try {
-			System.out.println(googleImageCrawler("재웅"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		try {
-			System.out.println(relatedGoogleCrawler("재웅"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 }
