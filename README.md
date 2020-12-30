@@ -27,16 +27,19 @@
 
 * 사용자는 랜덤으로 출력된 단어를 저장할 수 있으며, 필요에 따라서는 수동으로 단어를 저장할 수도 있다.
 
-* 랜덤 단어 생성은 표준국어대사전에서 제공하는 API를 기반으로 작성되었으며, 인덱스를 작성하면 웹 페이지로 파싱해 줌(단어와 뜻 정보를 가져옴).
-파싱 받은 데이터를 크롤링해서 연관되는 검색어와 이미지를 웹 상에 출력해 준다.
+* 랜덤 단어 생성은 표준국어대사전에서 제공하는 API를 기반으로 작성되었으며, 인덱스를 작성하면 웹 페이지로 파싱해 준다(단어와 뜻 정보를 가져옴). 이후 파싱 받은 데이터를 크롤링해서 연관되는 검색어와 이미지를 웹 상에 출력해 준다.
 
 * 사용자는 단어를 여러 개 저장한 후, 연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.
 <details>
-<summary>🧩Jsoup을 활용한 크롤링(Crawer.java)</summary>
+<summary>🧩 Jsoup을 활용한 크롤링(Crawer.java)</summary>
 <div markdown="1">
 
 ```java
 /**
+* 작성자 : 김재웅
+* Github(https://github.com/ArkimCity)
+* Github.io(https://arkimcity.github.io/)
+*
 * Jsoup을 활용한 크롤링(Crawer.java)
 */
 package www.model;
@@ -54,6 +57,10 @@ import org.jsoup.select.Elements;
 import org.apache.commons.lang.StringUtils;
 
 public class Crawler {
+	/**
+	* 국립국어원의 표준국어대사전 API 중,
+	* 표제어(word)와 뜻풀이(definition)를 크롤링함
+	*/
 	static String apikey = "A9CAF26B128DB44DA671FA8334A73CE9";
 
 	public static ArrayList<HashMap<String, String>> crawler(String inputnumber) {
@@ -85,9 +92,9 @@ public class Crawler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		return resultlist;
 	}
+	// 표준국어대사전 크롤링 종료
 
 	public static ArrayList<String> relatedNaverCrawler(String input) throws IOException {
 		System.out.println("네이버 연관 검색어");
@@ -190,6 +197,7 @@ public class Crawler {
 	}
 }
 ```
+
 </div>
 </details>
 
@@ -210,11 +218,11 @@ public class Crawler {
 </details>
 
 <details>
-<summary>📂 Folder Structure</summary>
+<summary>📂 Project Structure</summary>
 <div markdown="1">
 
 ```
-* 오늘의 단어(WorldOfWords)
+* 브레인스토밍 헬퍼(WorldOfWords)
 |
 ├── www.controller
 |      └── WorldOfWordsController.java
@@ -226,7 +234,7 @@ public class Crawler {
 |      ├── LoginService.java
 |      ├── UserCommunityDAO.java
 |      ├── UserWordDAO.java
-|      └── WorldOfWordsCRUDServic e.java
+|      └── WorldOfWordsCRUDService.java
 ├── www.model.dto
 |      ├── CommunityEntity.java
 |      ├── UserEntity.java
@@ -269,9 +277,12 @@ public class Crawler {
   <img src="https://user-images.githubusercontent.com/17983434/103252850-e6862980-49c1-11eb-97c9-83008e583f28.PNG" width="50%" height="50%" title="2" alt="2" />
 
 * 랜덤으로 출력된 단어를 저장할 수 있으며, **필요에 따라서는 수동으로 단어를 저장할 수도 있음.**
+
   <img src="https://user-images.githubusercontent.com/17983434/103252519-8fcc2000-49c0-11eb-8812-8875ef722830.gif" width="50%" height="50%" title="3" alt="3" />
 
-* 단어를 여러 개 저장한 후, 연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.
+* 단어를 여러 개 저장한 후, **연관 검색어와 이미지를 통해 시각적으로 확인할 수 있으며, 브레인스토밍을 위한 준비를 도와준다.**
+
+  <img src="https://user-images.githubusercontent.com/17983434/103330375-9338d780-4aa4-11eb-9a92-79b801182ae9.gif" width="50%" height="50%" title="4" alt="4" />
 
 ## 📝Conclusion
 이번 프로젝트를 통해 OracleDB부터 WEB상에 화면까지 통합적으로 개발하는 프로젝트를 수행하였습니다. 
