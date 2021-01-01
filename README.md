@@ -1,6 +1,8 @@
 # 브레인스토밍 헬퍼(World of Words) 🗃️
 아이디어가 떠오르지 않아 고통받던 우리는 이참에 앞으로도 우리의 브레인스토밍에 도움이 되길 바라면서 제작한 사이트입니다. 국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 등재된 모든 단어를 임의로 생성해보고 생성된 혹은 떠오른 단어를 저장해 구글과 네이버에 연관 검색어와 사진 등을 이용해 브레인스토밍에 조금이나마 도움이 되고자 제작해 보았습니다.
 
+* [실행 영상(유튜브)](https://youtu.be/1d84NPLRQj0)
+
 ## 📖Content
 * [1. 주제 선정(Motivation of selecting topic)](#🎶Motivation-of-selecting-topic)
 * [2. 사용된 기술 스택(Stack)](#🛠️Stack)
