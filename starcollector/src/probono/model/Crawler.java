@@ -10,8 +10,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang.StringUtils;
+
+@Slf4j
 
 public class Crawler {
 	static String apikey = "A9CAF26B128DB44DA671FA8334A73CE9";
@@ -68,7 +71,7 @@ public class Crawler {
 		for(Element e : relatedwords) {
 			resultList.add(StringUtils.substringBetween(e.toString(), "tit\">", "<"));
 		}
-		System.out.println("프로그램 종료");
+		
 		return resultList;
 	}
 	
@@ -91,7 +94,7 @@ public class Crawler {
 		for(Element e : relatedwords) {
 			resultList.add(StringUtils.substringBetween(StringUtils.substringBetween(e.toString(), "\">", "</p>"), "\">", "</a>"));
 		}
-		System.out.println("프로그램 종료");
+		log.warn("relatedNaverCrawler 실행 기록");
 		return resultList;
 	}
 	
@@ -117,7 +120,7 @@ public class Crawler {
 			resultList.add(minimap);
 		}
 		resultList.remove(0);
-		System.out.println("프로그램 종료");
+		log.warn("googleImageCrawler 실행 기록");
 		return resultList;
 	}
 	
@@ -143,7 +146,7 @@ public class Crawler {
 			resultList.add(minimap);
 		}
 		resultList.remove(0);
-		System.out.println("프로그램 종료");
+		log.warn("naverImageCrawler 실행 기록");
 		return resultList;
 	}
 }
