@@ -5,11 +5,11 @@
 
 ## 📖Content
 * [1. 주제 선정(Motivation of selecting topic)](#🎶Motivation-of-selecting-topic)
-* [2. 사용된 기술 스택(Stack)](#🛠️Stack)
-* [3. 기능 구현(Implementation)](#🧩Implementation)
-* [4. 데이터 구조(Structure)](#📊Structure)
-* [5. 사용법(How to USE?)](#🔰How-to-use?)
-* [6. 마무리(Conclusion)](#📝Conclusion)
+* [2. 사용된 기술 스택(Stack)](#Stack)
+* [3. 기능 구현(Implementation)](#Implementation)
+* [4. 데이터 구조(Structure)](#Structure)
+* [5. 사용법(How to USE?)](#How-to-use?)
+* [6. 마무리(Conclusion)](#Conclusion)
 
 ## 🎶Motivation of selecting topic
 아이디어가 너무 나오지 않아서 키워드를 얻고자 '랜덤 단어 생성 사이트'를 찾아보던 중, [영어로 된 사이트](https://randomwordgenerator.com/)는 상당히 완성도가 높았으나, 한국어도 된 사이트에서는 그다지 완성도가 높지 않은 듯하여 직접 만들어보게 되었습니다.
