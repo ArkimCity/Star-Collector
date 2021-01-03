@@ -8,7 +8,7 @@
 * [2. 사용된 기술 스택(Stack)](#Stack)
 * [3. 기능 구현(Implementation)](#Implementation)
 * [4. 데이터 구조(Structure)](#Structure)
-* [5. 사용법(How to USE?)](#How-to-use?)
+* [5. 사용법(How to USE?)](#How-to-use)
 * [6. 마무리(Conclusion)](#Conclusion)
 
 ## 🎶Motivation of selecting topic
