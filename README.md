@@ -4,8 +4,8 @@
 * [실행 영상(유튜브)](https://youtu.be/1d84NPLRQj0)
 
 ## 📖Content
-* [1. 주제 선정(Motivation of selecting topic)](#🎶Motivation-of-selecting-topic)
-* [2. 사용된 기술 스택(Stack)](#Stack)
+* [1. 주제 선정(Motivation of selecting topic)](#motivation-of-selecting-topic)
+* [2. 사용된 기술 스택(Stack)](#%EF%B8%8FStack)
 * [3. 기능 구현(Implementation)](#Implementation)
 * [4. 데이터 구조(Structure)](#Structure)
 * [5. 사용법(How to USE?)](#How-to-use)
