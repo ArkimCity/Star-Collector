@@ -1,13 +1,15 @@
 # 브레인스토밍 헬퍼(World of Words) 🗃️
 아이디어가 떠오르지 않아 고통받던 우리는 이참에 앞으로도 우리의 브레인스토밍에 도움이 되길 바라면서 제작한 사이트입니다. 국립국어원의 [표준국어대사전](https://stdict.korean.go.kr/main/main.do)에 등재된 모든 단어를 임의로 생성해보고 생성된 혹은 떠오른 단어를 저장해 구글과 네이버에 연관 검색어와 사진 등을 이용해 브레인스토밍에 조금이나마 도움이 되고자 제작해 보았습니다.
 
+* [실행 영상(유튜브)](https://youtu.be/1d84NPLRQj0)
+
 ## 📖Content
-* [1. 주제 선정(Motivation of selecting topic)](#🎶Motivation-of-selecting-topic)
-* [2. 사용된 기술 스택(Stack)](#🛠️Stack)
-* [3. 기능 구현(Implementation)](#🧩Implementation)
-* [4. 데이터 구조(Structure)](#📊Structure)
-* [5. 사용법(How to USE?)](#🔰How-to-use?)
-* [6. 마무리(Conclusion)](#📝Conclusion)
+* [1. 주제 선정(Motivation of selecting topic)](#motivation-of-selecting-topic)
+* [2. 사용된 기술 스택(Stack)](#%EF%B8%8FStack)
+* [3. 기능 구현(Implementation)](#Implementation)
+* [4. 데이터 구조(Structure)](#Structure)
+* [5. 사용법(How to USE?)](#How-to-use)
+* [6. 마무리(Conclusion)](#Conclusion)
 
 ## 🎶Motivation of selecting topic
 아이디어가 너무 나오지 않아서 키워드를 얻고자 '랜덤 단어 생성 사이트'를 찾아보던 중, [영어로 된 사이트](https://randomwordgenerator.com/)는 상당히 완성도가 높았으나, 한국어도 된 사이트에서는 그다지 완성도가 높지 않은 듯하여 직접 만들어보게 되었습니다.
